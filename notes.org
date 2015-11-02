@@ -1,0 +1,17 @@
+* PSU
+
+mightyohm vs. libellium/sparkfun vs. CCFL
+
+mightyohm equivs: 
+
+1N4937 - NTE552
+FJN3303F - STX13001/3/5, MJE13005, FJP13009, BUL216
+1N914 - 1N4148 
+2N3904 - 2N2222
+
+555 must be CMOS - TLC 555 smd
+
+for CCFL use 1W 200v zeners and 10Nf 1kv caps... (also for libel/sparkfun)
+
+SBM-20 - 400v (350-450), dead time = 190 microsec, 5M anode resistance
+
