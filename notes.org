@@ -15,3 +15,16 @@ for CCFL use 1W 200v zeners and 10Nf 1kv caps... (also for libel/sparkfun)
 
 SBM-20 - 400v (350-450), dead time = 190 microsec, 5M anode resistance
 
+* panel
+
+128.5 mm high // wide=
+
+perspex...
+
+size as need separate digital from HV PSU and tube!
+
+* TODO
+
+- PSU tests and schematic
+- footprints for switch, fuse-geiger holder, transformer or other PSU parts, outline for sample holder/resin block
+
