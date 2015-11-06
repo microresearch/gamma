@@ -1,4 +1,4 @@
-Cmp-Mod V01 Genere par PcbNew le Fri 06 Nov 2015 21:02:33 CET
+Cmp-Mod V01 Genere par PcbNew le Fri 06 Nov 2015 21:58:25 CET
 
 BeginCmp
 TimeStamp = /4F4672F7;
@@ -151,7 +151,7 @@ BeginCmp
 TimeStamp = /5501FCAA;
 Reference = D1;
 ValeurCmp = ZENER;
-IdModule  = D3;
+IdModule  = SOT23;
 EndCmp
 
 BeginCmp
@@ -165,7 +165,7 @@ BeginCmp
 TimeStamp = /5501FD9C;
 Reference = D3;
 ValeurCmp = ZENER;
-IdModule  = D3;
+IdModule  = SOT23;
 EndCmp
 
 BeginCmp
@@ -179,7 +179,7 @@ BeginCmp
 TimeStamp = /5501FDA4;
 Reference = D5;
 ValeurCmp = ZENER;
-IdModule  = D3;
+IdModule  = SOT23;
 EndCmp
 
 BeginCmp
@@ -298,7 +298,7 @@ BeginCmp
 TimeStamp = /563BE9E9;
 Reference = Q2;
 ValeurCmp = FJN3303F;
-IdModule  = TO220_VERT;
+IdModule  = TO92;
 EndCmp
 
 BeginCmp

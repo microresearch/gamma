@@ -39,9 +39,9 @@ size as need separate digital from HV PSU and tube!
 
 * TODO
 
-- PSU tests and schematic DONE - footprints to watch: switch, all transistors, fuse holder, pots, jacks...
+- PSU tests and schematic DONE - footprints to watch: switch, all transistors, fuse holder, pots, jacks...DONE
 
-- footprints for switch, fuse-geiger holder(from gieger.brd we now have), add outline for sample holder/resin block
+- footprints for switch, fuse-geiger holder(from gieger.brd we now have)DONE, add outline for sample holder/resin block
 
 SMD equivs MIGHTYOHM - 555 CMOS only, 3904=MMBT3904, FJNand1N4937=noSMD - or STN0214 
 
@@ -51,6 +51,16 @@ SMD equivs MIGHTYOHM - 555 CMOS only, 3904=MMBT3904, FJNand1N4937=noSMD - or STN
 
 see: https://dl.dropboxusercontent.com/u/3572198/GK%20v5.5/GK%20v5.5%20Schematic.png
 
+- LENGTH of tube and distance for holders?
+
+- sample size and placement and casting of?
+
 * parts list and ordering info
+
+input clamp now bat854sw: http://www.mouser.de/ProductDetail/NXP-Semiconductors/BAT854SW115/?qs=sGAEpiMZZMutXGli8Ay4kDE4J8KCiPsFr1SJWGeBnxg%3d
+
+CMOS 555=
+
+MMBT3904
 
 * manual notes
