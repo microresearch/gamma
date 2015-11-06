@@ -11,13 +11,27 @@ FJN3303F - STX13001/3/5, MJE13005, FJP13009, BUL216
 
 555 must be CMOS - TLC 555 smd
 
-for CCFL use 1W 200v zeners and 10Nf 1kv caps... (also for libel/sparkfun)
+NOT USE- [for CCFL use 1W 200v zeners and 10Nf 1kv caps... (also for libel/sparkfun)]
 
-SBM-20 - 400v (350-450), dead time = 190 microsec, 5M anode resistance
+SBM-20 - 400v (350-450), dead time = 190 microsec, 4.7M anode resistance
+
+- add LED and serial out for testing
+
+so far on mightyohm - 16.6 k (10k+3x2.2) gives 400v approx and works fine. DECOUPLE PSU
+
+sparkfun - works with crossover transformer (also rising edge for detection)
+
+both seem give same kind of results with sources...
+
+*decided on 555//mightyohm and check all versions*
+
+* PCB
+
+110 mm high max
 
 * panel
 
-128.5 mm high // wide=
+128.5 mm high // wide=12hP 60.6mm
 
 perspex...
 
@@ -25,6 +39,12 @@ size as need separate digital from HV PSU and tube!
 
 * TODO
 
-- PSU tests and schematic
-- footprints for switch, fuse-geiger holder, transformer or other PSU parts, outline for sample holder/resin block
+- PSU tests and schematic DONE - footprints to watch: switch, all transistors, fuse holder, pots, jacks...
 
+- footprints for switch, fuse-geiger holder(from gieger.brd we now have), add outline for sample holder/resin block
+
+SMD equivs MIGHTYOHM - 555 CMOS only, 3904=MMBT3904, FJNand1N4937=noSMD - or STN0214 
+
+*- FALLING edge interrupt - test new additions following (also raw stretched geiger is protected and we have LED raw out to TEST!*
+
+see: https://dl.dropboxusercontent.com/u/3572198/GK%20v5.5/GK%20v5.5%20Schematic.png
