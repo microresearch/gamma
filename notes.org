@@ -27,11 +27,11 @@ both seem give same kind of results with sources...
 
 * PCB
 
-110 mm high max
+110 mm high max, width=60.6 minus ... say 50.6
 
 * panel
 
-128.5 mm high // wide=12hP 60.6mm
+*128.5 mm high // wide=12hP 60.6mm*
 
 perspex...
 
@@ -47,4 +47,10 @@ SMD equivs MIGHTYOHM - 555 CMOS only, 3904=MMBT3904, FJNand1N4937=noSMD - or STN
 
 *- FALLING edge interrupt - test new additions following (also raw stretched geiger is protected and we have LED raw out to TEST!*
 
+- note pay attention to which are HV components!
+
 see: https://dl.dropboxusercontent.com/u/3572198/GK%20v5.5/GK%20v5.5%20Schematic.png
+
+* parts list and ordering info
+
+* manual notes

@@ -1,0 +1,728 @@
+# EESchema Netlist Version 1.1 created  Fri 06 Nov 2015 20:33:39 CET
+(
+ ( /4F4672F7 SM0805 C1 100N
+  ( 1 /RESET )
+  ( 2 GND )
+ )
+ ( /4F467168 SM0805 C2 22_pF
+  ( 1 N-000022 )
+  ( 2 GND )
+ )
+ ( /4F467169 SM0805 C3 22_pF
+  ( 1 N-000023 )
+  ( 2 GND )
+ )
+ ( /4F46716B SM1206POL C4 1_uF
+  ( 1 +5V )
+  ( 2 GND )
+ )
+ ( /4F4963E4 SM0805 C5 100N
+  ( 1 N-000053 )
+  ( 2 GND )
+ )
+ ( /4F4674E8 SM0805 C6 100N
+  ( 1 +5V )
+  ( 2 GND )
+ )
+ ( /5501FA02 SM0805 C7 47N
+  ( 1 N-000046 )
+  ( 2 GND )
+ )
+ ( /5501FA0D SM0805 C8 47N
+  ( 1 N-000054 )
+  ( 2 GND )
+ )
+ ( /5501FBBC SM0805 C9 100N
+  ( 1 GND )
+  ( 2 N-000052 )
+ )
+ ( /5501E09B SM1206POL C10 CP
+  ( 1 +12V )
+  ( 2 GND )
+ )
+ ( /5501E09A SM1206POL C11 CP
+  ( 1 GND )
+  ( 2 -12V )
+ )
+ ( /5501FA24 SM0805 C12 10N
+  ( 1 N-000058 )
+  ( 2 N-000045 )
+ )
+ ( /563BECA6 SM0805 C13 100N
+  ( 1 +5V )
+  ( 2 GND )
+ )
+ ( /4F467132 SM1206POL C14 10uF
+  ( 1 +12V )
+  ( 2 GND )
+ )
+ ( /4F467133 SM1206POL C15 1uF
+  ( 1 +5V )
+  ( 2 GND )
+ )
+ ( /563BFA22 C2 C16 330pF_1000V
+  ( 1 N-000057 )
+  ( 2 GND )
+ )
+ ( /563BE894 SM0805 C17 1nF
+  ( 1 N-000059 )
+  ( 2 GND )
+ )
+ ( /563BEB93 C2 C18 10nF_1000V
+  ( 1 N-000012 )
+  ( 2 GND )
+ )
+ ( /563BEC88 SM0805 C19 100N
+  ( 1 +5V )
+  ( 2 GND )
+ )
+ ( /563BFF6E SM0805 C20 100N
+  ( 1 N-000056 )
+  ( 2 /GEIGER )
+ )
+ ( /563BFFD6 SM0805 C21 22nF
+  ( 1 N-000060 )
+  ( 2 GND )
+ )
+ ( /5501FCAA D3 D1 ZENER
+  ( 1 /AN3 )
+  ( 2 +5V )
+ )
+ ( /5501FCA1 D3 D2 ZENER
+  ( 1 GND )
+  ( 2 /AN3 )
+ )
+ ( /5501FD9C D3 D3 ZENER
+  ( 1 /INT_TRIG )
+  ( 2 +5V )
+ )
+ ( /5501FD9D D3 D4 ZENER
+  ( 1 GND )
+  ( 2 /INT_TRIG )
+ )
+ ( /5501FDA4 D3 D5 ZENER
+  ( 1 /AN4 )
+  ( 2 +5V )
+ )
+ ( /5501FDA5 D3 D6 ZENER
+  ( 1 GND )
+  ( 2 /AN4 )
+ )
+ ( /5501E0A1 D3 D7 DIODE
+  ( 1 N-000051 )
+  ( 2 +12V )
+ )
+ ( /5501E0A2 D3 D8 DIODE
+  ( 1 -12V )
+  ( 2 N-000041 )
+ )
+ ( /563BE849 D3 D9 1N914
+  ( 1 N-000016 )
+  ( 2 N-000059 )
+ )
+ ( /563BEB69 D3 D10 1N4937
+  ( 1 N-000021 )
+  ( 2 N-000012 )
+ )
+ ( /563BFF90 D3 D11 1N4148
+  ( 1 N-000060 )
+  ( 2 N-000056 )
+ )
+ ( /563C0049 LED-0805 D12 LED
+  ( 1 N-000061 )
+  ( 2 GND )
+ )
+ ( /4F466F37 avr-4-TQFP32-08 IC1 MEGA48/88/168-AU
+  ( 1 /INT_TRIG )
+  ( 2 /SW1 )
+  ( 3 GND )
+  ( 4 +5V )
+  ( 5 GND )
+  ( 6 +5V )
+  ( 7 N-000022 )
+  ( 8 N-000023 )
+  ( 9 /SW2 )
+  ( 10 /OUT1 )
+  ( 11 ? )
+  ( 12 ? )
+  ( 13 ? )
+  ( 14 ? )
+  ( 15 /MOSI )
+  ( 16 /MISO )
+  ( 17 /SCK )
+  ( 18 +5V )
+  ( 19 ? )
+  ( 20 N-000053 )
+  ( 21 GND )
+  ( 22 ? )
+  ( 23 /AN1 )
+  ( 24 /AN2 )
+  ( 25 /AN3 )
+  ( 26 /AN4 )
+  ( 27 ? )
+  ( 28 ? )
+  ( 29 /RESET )
+  ( 30 ? )
+  ( 31 N-000015 )
+  ( 32 /GEIGER )
+ )
+ ( /563BEB50 INDUCTOR_V L1 INDUCTOR
+  ( 1 +5V )
+  ( 2 N-000021 )
+ )
+ ( /4F46756E PIN_ARRAY_5x1 P1 CONN_5
+  ( 1 GND )
+  ( 2 /SCK )
+  ( 3 /MISO )
+  ( 4 /MOSI )
+  ( 5 /RESET )
+ )
+ ( /5501E0A3 PIN_ARRAY_5x2 P2 CONN_5X2
+  ( 1 N-000051 )
+  ( 2 N-000051 )
+  ( 3 GND )
+  ( 4 GND )
+  ( 5 GND )
+  ( 6 GND )
+  ( 7 GND )
+  ( 8 GND )
+  ( 9 N-000041 )
+  ( 10 N-000041 )
+ )
+ ( /563BEBE7 PIN_ARRAY_1 P3 CONN_1
+  ( 1 N-000012 )
+ )
+ ( /563BEBF7 FUSECLIP_PCMOUNT P4 CONN_1
+  ( 1 N-000011 )
+ )
+ ( /563BEC1B FUSECLIP_PCMOUNT P5 CONN_1
+  ( 1 N-000057 )
+ )
+ ( /563BFDD3 PIN_ARRAY_2X1 P6 CONN_2
+  ( 1 GND )
+  ( 2 N-000015 )
+ )
+ ( /563BE9EE SOT23EBC Q1 2n3904-smd
+  ( 1 GND )
+  ( 2 N-000019 )
+  ( 3 N-000020 )
+ )
+ ( /563BE9E9 TO220_VERT Q2 FJN3303F
+  ( 1 N-000019 )
+  ( 2 N-000055 )
+  ( 3 N-000021 )
+ )
+ ( /563BECF8 SOT23EBC Q3 2n3904-smd
+  ( 1 GND )
+  ( 2 N-000014 )
+  ( 3 N-000056 )
+ )
+ ( /4F4672F4 SM0805 R1 10K
+  ( 1 /RESET )
+  ( 2 +5V )
+ )
+ ( /5501FC7E SM0805 R2 1K
+  ( 1 /CVV1 )
+  ( 2 /AN3 )
+ )
+ ( /5501FD9E SM0805 R3 1K
+  ( 1 /TRIGGER )
+  ( 2 /INT_TRIG )
+ )
+ ( /5501FDA6 SM0805 R4 1K
+  ( 1 /CVV2 )
+  ( 2 /AN4 )
+ )
+ ( /5501F9EE SM0805 R5 56K
+  ( 1 /OUT1 )
+  ( 2 N-000046 )
+ )
+ ( /5501F9DA SM0805 R6 56K
+  ( 1 N-000046 )
+  ( 2 N-000054 )
+ )
+ ( /5501F9E6 SM0805 R7 33K
+  ( 1 N-000054 )
+  ( 2 N-000058 )
+ )
+ ( /5501FB6F SM0805 R8 33K
+  ( 1 GND )
+  ( 2 N-000052 )
+ )
+ ( /5501FB73 SM0805 R9 33K
+  ( 1 N-000052 )
+  ( 2 +5V )
+ )
+ ( /5501FA1F SM0805 R10 121K
+  ( 1 N-000054 )
+  ( 2 N-000045 )
+ )
+ ( /5501FDF3 SM0805 R11 1K
+  ( 1 N-000045 )
+  ( 2 /OUT )
+ )
+ ( /563BE812 SM0805 R12 220K
+  ( 1 GND )
+  ( 2 N-000059 )
+ )
+ ( /563BE85A SM0805 R13 100K
+  ( 1 N-000020 )
+  ( 2 +5V )
+ )
+ ( /563BE82D SM0805 R14 1K
+  ( 1 N-000016 )
+  ( 2 N-000017 )
+ )
+ ( /563BE861 SM0805 R15 1K
+  ( 1 N-000055 )
+  ( 2 N-000017 )
+ )
+ ( /563BEA8B SM0805 R16 10R
+  ( 1 N-000013 )
+  ( 2 N-000019 )
+ )
+ ( /563BEA91 SM0805 R17 6.8R
+  ( 1 GND )
+  ( 2 N-000013 )
+ )
+ ( /563BEBC5 SM0805 R18 4.7M
+  ( 1 N-000011 )
+  ( 2 N-000012 )
+ )
+ ( /563BFEB5 SM0805 R19 100K
+  ( 1 GND )
+  ( 2 N-000014 )
+ )
+ ( /563BFFB5 SM0805 R20 100K
+  ( 1 N-000060 )
+  ( 2 +5V )
+ )
+ ( /563BED0D SM0805 R21 10K
+  ( 1 N-000056 )
+  ( 2 +5V )
+ )
+ ( /563BEDBE SM0805 R22 1.5K
+  ( 1 N-000014 )
+  ( 2 N-000057 )
+ )
+ ( /563C0035 SM0805 R23 1K
+  ( 1 N-000061 )
+  ( 2 /STRETCH )
+ )
+ ( /4F46703A RV1 RV2 POT
+  ( 1 GND )
+  ( 2 /AN2 )
+  ( 3 +5V )
+ )
+ ( /4F467039 RV1 RV3 POT
+  ( 1 GND )
+  ( 2 /AN1 )
+  ( 3 +5V )
+ )
+ ( /5637E124 SW_SPDT SW1 SWITCH_INV
+  ( 1 GND )
+  ( 2 /SW1 )
+  ( 3 ? )
+ )
+ ( /5637E12E SW_SPDT_segor SW2 SWITCH_INV
+  ( 1 GND )
+  ( 2 /SW2 )
+  ( 3 ? )
+ )
+ ( /55056BB8 ERTHENVAR-JACK U1 AUDIO-JACKERTHENVAR_ERTHENVAR-JACK
+  ( 1@1 GND )
+  ( 2 GND )
+  ( 3 /CVV2 )
+ )
+ ( /5505692C ERTHENVAR-JACK U2 AUDIO-JACKERTHENVAR_ERTHENVAR-JACK
+  ( 1@1 GND )
+  ( 2 GND )
+  ( 3 /OUT )
+ )
+ ( /5501F9C5 SO8E U3 TL072
+  ( 1 N-000045 )
+  ( 2 N-000058 )
+  ( 3 N-000052 )
+  ( 4 -12V )
+  ( 8 +12V )
+ )
+ ( /4F467131 LM78XXV U4 7805
+  ( GND GND )
+  ( VI +12V )
+  ( VO +5V )
+ )
+ ( /55056BBF ERTHENVAR-JACK U5 AUDIO-JACKERTHENVAR_ERTHENVAR-JACK
+  ( 1@1 GND )
+  ( 2 GND )
+  ( 3 /TRIGGER )
+ )
+ ( /55056BEE ERTHENVAR-JACK U6 AUDIO-JACKERTHENVAR_ERTHENVAR-JACK
+  ( 1@1 GND )
+  ( 2 GND )
+  ( 3 /CVV1 )
+ )
+ ( /563BE752 SO8E U7 TLC555N
+  ( 1 GND )
+  ( 2 N-000059 )
+  ( 3 N-000017 )
+  ( 4 N-000020 )
+  ( 5 ? )
+  ( 6 GND )
+  ( 7 N-000055 )
+  ( 8 +5V )
+ )
+ ( /563BFFFB SO14E U8 74HC14
+  ( 1 N-000060 )
+  ( 2 /STRETCH )
+  ( 7 GND )
+  ( 14 +5V )
+ )
+ ( /5637DBEF ERTHENVAR-JACK U9 AUDIO-JACKERTHENVAR_ERTHENVAR-JACK
+  ( 1@1 GND )
+  ( 2 GND )
+  ( 3 /STRETCH )
+ )
+ ( /4F467167 Q_49U3HMS X1 16_MHz
+  ( 1 N-000022 )
+  ( 2 N-000023 )
+ )
+)
+*
+{ Allowed footprints by component:
+$component C1
+ SM*
+ C?
+ C1-1
+$endlist
+$component C2
+ SM*
+ C?
+ C1-1
+$endlist
+$component C3
+ SM*
+ C?
+ C1-1
+$endlist
+$component C4
+ CP*
+ SM*
+$endlist
+$component C5
+ SM*
+ C?
+ C1-1
+$endlist
+$component C6
+ SM*
+ C?
+ C1-1
+$endlist
+$component C7
+ SM*
+ C?
+ C1-1
+$endlist
+$component C8
+ SM*
+ C?
+ C1-1
+$endlist
+$component C9
+ SM*
+ C?
+ C1-1
+$endlist
+$component C10
+ CP*
+ SM*
+$endlist
+$component C11
+ CP*
+ SM*
+$endlist
+$component C12
+ SM*
+ C?
+ C1-1
+$endlist
+$component C13
+ SM*
+ C?
+ C1-1
+$endlist
+$component C14
+ CP*
+ SM*
+$endlist
+$component C15
+ CP*
+ SM*
+$endlist
+$component C16
+ SM*
+ C?
+ C1-1
+$endlist
+$component C17
+ SM*
+ C?
+ C1-1
+$endlist
+$component C18
+ SM*
+ C?
+ C1-1
+$endlist
+$component C19
+ SM*
+ C?
+ C1-1
+$endlist
+$component C20
+ SM*
+ C?
+ C1-1
+$endlist
+$component C21
+ SM*
+ C?
+ C1-1
+$endlist
+$component D1
+ D?
+ SO*
+ SM*
+$endlist
+$component D2
+ D?
+ SO*
+ SM*
+$endlist
+$component D3
+ D?
+ SO*
+ SM*
+$endlist
+$component D4
+ D?
+ SO*
+ SM*
+$endlist
+$component D5
+ D?
+ SO*
+ SM*
+$endlist
+$component D6
+ D?
+ SO*
+ SM*
+$endlist
+$component D7
+ D?
+ S*
+$endlist
+$component D8
+ D?
+ S*
+$endlist
+$component D9
+ D?
+ S*
+$endlist
+$component D10
+ D?
+ S*
+$endlist
+$component D11
+ D?
+ S*
+$endlist
+$component D12
+ LED-3MM
+ LED-5MM
+ LED-10MM
+ LED-0603
+ LED-0805
+ LED-1206
+ LEDV
+$endlist
+$component R1
+ R?
+ SM0603
+ SM0805
+ R?-*
+ SM1206
+$endlist
+$component R2
+ R?
+ SM0603
+ SM0805
+ R?-*
+ SM1206
+$endlist
+$component R3
+ R?
+ SM0603
+ SM0805
+ R?-*
+ SM1206
+$endlist
+$component R4
+ R?
+ SM0603
+ SM0805
+ R?-*
+ SM1206
+$endlist
+$component R5
+ R?
+ SM0603
+ SM0805
+ R?-*
+ SM1206
+$endlist
+$component R6
+ R?
+ SM0603
+ SM0805
+ R?-*
+ SM1206
+$endlist
+$component R7
+ R?
+ SM0603
+ SM0805
+ R?-*
+ SM1206
+$endlist
+$component R8
+ R?
+ SM0603
+ SM0805
+ R?-*
+ SM1206
+$endlist
+$component R9
+ R?
+ SM0603
+ SM0805
+ R?-*
+ SM1206
+$endlist
+$component R10
+ R?
+ SM0603
+ SM0805
+ R?-*
+ SM1206
+$endlist
+$component R11
+ R?
+ SM0603
+ SM0805
+ R?-*
+ SM1206
+$endlist
+$component R12
+ R?
+ SM0603
+ SM0805
+ R?-*
+ SM1206
+$endlist
+$component R13
+ R?
+ SM0603
+ SM0805
+ R?-*
+ SM1206
+$endlist
+$component R14
+ R?
+ SM0603
+ SM0805
+ R?-*
+ SM1206
+$endlist
+$component R15
+ R?
+ SM0603
+ SM0805
+ R?-*
+ SM1206
+$endlist
+$component R16
+ R?
+ SM0603
+ SM0805
+ R?-*
+ SM1206
+$endlist
+$component R17
+ R?
+ SM0603
+ SM0805
+ R?-*
+ SM1206
+$endlist
+$component R18
+ R?
+ SM0603
+ SM0805
+ R?-*
+ SM1206
+$endlist
+$component R19
+ R?
+ SM0603
+ SM0805
+ R?-*
+ SM1206
+$endlist
+$component R20
+ R?
+ SM0603
+ SM0805
+ R?-*
+ SM1206
+$endlist
+$component R21
+ R?
+ SM0603
+ SM0805
+ R?-*
+ SM1206
+$endlist
+$component R22
+ R?
+ SM0603
+ SM0805
+ R?-*
+ SM1206
+$endlist
+$component R23
+ R?
+ SM0603
+ SM0805
+ R?-*
+ SM1206
+$endlist
+$component U1
+ ERTHENVAR-JACK
+$endlist
+$component U2
+ ERTHENVAR-JACK
+$endlist
+$component U5
+ ERTHENVAR-JACK
+$endlist
+$component U6
+ ERTHENVAR-JACK
+$endlist
+$component U9
+ ERTHENVAR-JACK
+$endlist
+$endfootprintlist
+}
