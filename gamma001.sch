@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date Sat 07 Nov 2015 00:21:43 CET
+EESchema Schematic File Version 2  date Mon 09 Nov 2015 22:11:10 CET
 LIBS:power
 LIBS:maxim-filter
 LIBS:avr-4
@@ -41,7 +41,7 @@ $Descr A4 11700 8267
 encoding utf-8
 Sheet 1 1
 Title ""
-Date "6 nov 2015"
+Date "9 nov 2015"
 Rev ""
 Comp ""
 Comment1 ""
@@ -50,7 +50,7 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 Text Notes 9450 6150 0    60   ~ 0
-2mS pulse
+1mS pulse
 Wire Wire Line
 	9950 6950 9950 7050
 Connection ~ 9500 6400
@@ -677,7 +677,7 @@ L C C21
 U 1 1 563BFFD6
 P 8200 6650
 F 0 "C21" H 8250 6750 50  0000 L CNN
-F 1 "22nF" H 8250 6550 50  0000 L CNN
+F 1 "10nF" H 8250 6550 50  0000 L CNN
 	1    8200 6650
 	1    0    0    -1  
 $EndComp
@@ -1438,7 +1438,7 @@ L R R9
 U 1 1 5501FB73
 P 8350 4800
 F 0 "R9" V 8430 4800 50  0000 C CNN
-F 1 "33K" V 8350 4800 50  0000 C CNN
+F 1 "10K" V 8350 4800 50  0000 C CNN
 	1    8350 4800
 	0    -1   -1   0   
 $EndComp
@@ -1447,7 +1447,7 @@ L R R8
 U 1 1 5501FB6F
 P 7750 4800
 F 0 "R8" V 7830 4800 50  0000 C CNN
-F 1 "33K" V 7750 4800 50  0000 C CNN
+F 1 "10K" V 7750 4800 50  0000 C CNN
 	1    7750 4800
 	0    -1   -1   0   
 $EndComp

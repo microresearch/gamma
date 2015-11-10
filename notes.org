@@ -45,17 +45,19 @@ size as need separate digital from HV PSU and tube!
 
 SMD equivs MIGHTYOHM - 555 CMOS only, 3904=MMBT3904, FJNand1N4937=noSMD - or STN0214 
 
-*- FALLING edge interrupt - test new additions following (also raw stretched geiger is protected and we have LED raw out to TEST!*
+- FALLING edge interrupt - test new additions following (also raw stretched geiger is protected and we have LED raw out to TEST) DONE
+
+1ms for stretch
 
 - note pay attention to which are HV components!
 
 see: https://dl.dropboxusercontent.com/u/3572198/GK%20v5.5/GK%20v5.5%20Schematic.png
 
-- LENGTH of tube and distance for holders?
-
 - sample size and placement and casting of?
 
 * parts list and ordering info
+
+fuse holder changed to mouser: 576-010200742
 
 input clamp now bat854sw: http://www.mouser.de/ProductDetail/NXP-Semiconductors/BAT854SW115/?qs=sGAEpiMZZMutXGli8Ay4kDE4J8KCiPsFr1SJWGeBnxg%3d
 
