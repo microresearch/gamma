@@ -43,7 +43,6 @@ From switches:
 
 Notes: 
 
-- Calibrate 1st minute for scale ???
 - Store entropy in array for use just in case (then we can select random value)
 - say we have 150 cps = 1/150=1/200 say = 0.005 = average 500 microseconds every event
 
@@ -84,7 +83,8 @@ ISR (INT0_vect) // geiger interrupt
   unsigned char bit;
   static unsigned char bitcount=0;
   static unsigned int lasttime=0;
-  unsigned int thistime,temprandom;
+  unsigned int thistime;
+  static unsigned char temprandom=0;
   // what is timer count? TIMER1 - has it overflowed though? does it matter?
   thistime=TCNT1L+(TCNT1H<<8);
   // generate bits and count upto byte which is lastrandom
@@ -98,7 +98,7 @@ ISR (INT0_vect) // geiger interrupt
   }
   bitcount++;
   lasttime=thistime;
-  // in mode 1 we need two random bytes  - what else?
+  // in mode 1 we need two random bytes  - do we just keep on accumulating?
 }
 
 ISR (INT1_vect) // trigger interrupt
@@ -204,9 +204,6 @@ void main(void)
 	
     sei(); //turn on global interrupts - make sure this doesn't interfere with PWM?
 
-
-  /* TODO: - Calibrate 1st minute for scale*/
-
     highcounter=0;
     hightimer=10; // 10Hz
 
@@ -218,7 +215,7 @@ void main(void)
 
     // set speed and scaling
     unsigned char speedscale=adcread(0)+adcread(3);
-    speed=speedlook[speedscale]*10; // 10 Hz basis
+    speed=speedlook[speedscale]*10; // 10 Hz basis todo - now is just 10 still!!
     unsigned char valuescale=adcread(1)+adcread(2);
   }
 
