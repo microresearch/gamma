@@ -15,9 +15,7 @@ basic test code now in place without speed or scale and set to mode 0 so should 
 Geiger is on INT0/PD2
 Trigger is on INT1/PD3
 
-Counters are...
-
-- what are inputs and outputs
+- what are inputs and outputs?
 
 Output as euromicro/SIR = - out is on PD6 now // was PD6=0C0A DONE
 
@@ -34,16 +32,13 @@ CV second down is ADC2/PC2=scale
 From switches:
 
 0-00/ scaled random every speed time - int for timing and output lastrandom/scaled - what is our scale for speed say fastest=10Hz to slowest=every 30 seconds - need scale fixed array/log
-
 1-01/ scale random every random time scaled by speed setting - int at random time = two random numbers needed 
-
 2-10/ pulse 5v every x scaled random time - as above
-
 3-11/ 5v trigger in gives last random voltage we generated - trigger interrupt
 
 Notes: 
 
-- Store entropy in array for use just in case (then we can select random value)
+[- Store entropy in array for use just in case (then we can select random value)]
 - say we have 150 cps = 1/150=1/200 say = 0.005 = average 500 microseconds every event
 
  */
@@ -86,7 +81,7 @@ ISR (INT0_vect) // geiger interrupt
   unsigned int thistime;
   static unsigned char temprandom=0;
   // what is timer count? TIMER1 - has it overflowed though? does it matter?
-  thistime=TCNT1L+(TCNT1H<<8);
+  thistime=TCNT1;//L+(TCNT1H<<8);
   // generate bits and count upto byte which is lastrandom
   if (lasttime<thistime) bit=0;
   else bit=1;
@@ -99,6 +94,12 @@ ISR (INT0_vect) // geiger interrupt
   bitcount++;
   lasttime=thistime;
   // in mode 1 we need two random bytes  - do we just keep on accumulating?
+
+  // reset timer?
+  TCCR1A = 0x00;
+  TCNT1=0;
+  //TCNT1H=0;
+  // TCNT1L=0; 
 }
 
 ISR (INT1_vect) // trigger interrupt
