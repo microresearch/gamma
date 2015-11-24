@@ -1,3 +1,7 @@
+* Latest
+
+
+
 * PSU
 
 mightyohm vs. libellium/sparkfun vs. CCFL
@@ -57,13 +61,91 @@ see: https://dl.dropboxusercontent.com/u/3572198/GK%20v5.5/GK%20v5.5%20Schematic
 
 * parts list and ordering info
 
-fuse holder changed to mouser: 576-010200742
+res and some mouser switches
 
-input clamp now bat854sw: http://www.mouser.de/ProductDetail/NXP-Semiconductors/BAT854SW115/?qs=sGAEpiMZZMutXGli8Ay4kDE4J8KCiPsFr1SJWGeBnxg%3d
+| 1 uF         C4        ;             
+| 1.5K         R22       ; x -reichX                        
+| 100K         R13       ;             
+| 100K         R19       ;             
+| 100K         R20       ;             
+| 100N         C1        ;             
+| 100N         C5        ;             
+| 100N         C6        ;             
+| 100N         C9        ;             
+| 100N         C13       ;             
+| 100N         C19       ;             
+| 100N         C20       ;             
+| 10K          R1        ;             
+| 10K          R8        ;             
+| 10K          R9        ;             
+| 10K          R21       ;             
+| 10N          C12       ;             
+| 10nF         C21       ;             
+| 10nF 1000V   C18       ; x-> mouser   S103M47Z5UN63J7RX  X       
+| 10R          R16       ;             
+| 10uF         C14       ; x             
+| 121K         R10       ; x - reichX           
+| 16 MHz       X1        ; x -reichX            
+| 1K           R2        ;             
+| 1K           R3        ;             
+| 1K           R4        ;             
+| 1K           R11       ;             
+| 1K           R14       ;             
+| 1K           R15       ;             
+| 1K           R23       ;             
+| 1K           R24       ;             
+| 1N4148       D11       ; x - thru hole x -reich                                   X
+| 1N4937       D10       ; x - thru hole x -reich                                   X      
+| 1N914        D9        ; x - thru hole x -reichX                   
+| 1nF          C17       ;             
+| 1uF          C15       ;             
+| 22 pF        C2        ;             
+| 22 pF        C3        ;             
+| 220K         R12       ; x -reich X                       
+| 2n3904-smd   Q1        ; x- MMBT3904Xsegor            
+| 2n3904-smd   Q3        ;             
+| 330pF 1000V  C16       ; x -mouser?    S221K25Y5PN6TK5R X        
+| 33K          R7        ; x -reichX                        
+| 4.7M         R18       ; x -reichX                       
+| 47N          C7        ; x -reichX  X7R-G0805 47N                                  
+| 47N          C8        ;                                    
+| 56K          R5        ; x -reichX                                   
+| 56K          R6        ;             
+| 6.8R         R17       ; x -reichX                                   
+| 74HC14       U8        ; x -reichX                                   
+| 7805         U4        ; x -reichX                                   
+| AUDIO-JACKERTHENVAR_ERTHENVAR-JACK U1        ;             
+| AUDIO-JACKERTHENVAR_ERTHENVAR-JACK U2        ;             
+| AUDIO-JACKERTHENVAR_ERTHENVAR-JACK U5        ;             
+| AUDIO-JACKERTHENVAR_ERTHENVAR-JACK U6        ;             
+| AUDIO-JACKERTHENVAR_ERTHENVAR-JACK U9        ;             
+| CONN_1       P3        ; pin X           
+| CONN_1       P4        ; x fuse holder is mouser: 576-01020074Z x2 X
+| CONN_1       P5        ; x as above            
+| CONN_2       P6        ; 2pin X           
+| CONN_5       P1        ; progpins X           
+| CONN_5X2     P2        ; 10 pin x -reichMPE 087-2-010X                                   
+| CP           C10       ; ? x 10uF           
+| CP           C11       ; ? x 10uF           
+| DIODE        D7        ; ? x protection as on all=  - mouser 1N5819HW-7-F X
+| DIODE        D8        ; ? x           
+| FJN3303F     Q2        ; x 0- mouser X           
+| INDUCTOR     L1        ; x -reich  L-11P 10M X                                  
+| LED          D12       ; x -reich X                                  
+| MEGA48/88/168-AU IC1     x -reich  X                       ; avr-4-TQFP32-08
+| POT          RV2       ;             
+| POT          RV3       ;             
+| SWITCH_INV   SW1       ; x-segor X            
+| SWITCH_INV   SW2       ; x-segor X           
+| TL072        U3        ; x -reich  TL 072 CD SMD X                                  
+| TLC555N      U7        ; x -reich X                                  
+| ZENER        D1        ; x incoming zeners MOUSER = input clamp now bat854sw: BAT854SW115 X
+| ZENER        D2        ; 3 each            
+| ZENER        D3        ;             
+| ZENER        D4        ;             
+| ZENER        D5        ;             
+| ZENER        D6        ;             
 
-CMOS 555=
-
-MMBT3904
 
 * manual/software notes
 
