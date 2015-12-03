@@ -1,5 +1,14 @@
 * Latest
 
+** 24/11
+
+- gamma.c basic tests and see if need to redesign for ICP but probably not as is not so critical time-wise
+
+- q of transistor FJN which doesn;t seem to work (BUL216 is fine) - if is just resistor Q/trim for every case?
+
+problem was we have FJN3303R which has a resistor inside it
+
+- programs fuse fine// TEST all TODO!
 
 
 * PSU

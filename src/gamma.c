@@ -174,7 +174,9 @@ void main(void)
   //////////////////
 
   //pin change interrupt on INT0 and INT1
-  EICRA = (1<<ISC01) | (1<<ISC00) | (1<<ISC10) | (1<<ISC11);// rising edge on INT0 and INT1
+  //  EICRA = (1<<ISC01) | (1<<ISC00) | (1<<ISC10) | (1<<ISC11);// rising edge on INT0 and INT1
+  EICRA = (1<<ISC01) | (1<<ISC10) | (1<<ISC11);// falling edge on INT0 and rising on INT1
+
   EIMSK = (1<<INT0) | (1<<INT1);
 
   //////////////////
@@ -199,7 +201,13 @@ void main(void)
 
     //(CPU frequency) / (prescaler value) = 125000 Hz = 8us. 15625 hz
     //   (desired period) / 8us = 125.  0.01 / 0.000064 = 156 
+
+    /// FOR 0.001 seconds so *100 for 1/10th of a second!
+    //0.001/0.000064=15.6 say 16
     //   MAX(uint8) + 1 - 125 = 131; 256- 156 = 100
+    // 256-16=240
+
+
 
     TCNT2 = 100; 
 	
