@@ -1,14 +1,8 @@
 /* ERD/GAMMA
 
-commencing geiger test code
-
-basic test code now in place without speed or scale and set to mode 0 so should output random bit at 10Hz
+- finished now just more or less to tweak
 
 ////////////////////
-
-//TODO: thinking to switch design to input of geiger on PB0 = ICP1 and using ICP!
-
-//BUT make some tests first using what we have - after all with bit scheme we don;t need so accurate
 
 - what are interrupts?
 
@@ -31,10 +25,19 @@ CV second down is ADC2/PC2=scale
 
 From switches:
 
-0-00/ scaled random every speed time - int for timing and output lastrandom/scaled - what is our scale for speed say fastest=10Hz to slowest=every 30 seconds - need scale fixed array/log
-1-01/ scale random every random time scaled by speed setting - int at random time = two random numbers needed 
-2-10/ pulse 5v every x scaled random time - as above
-3-11/ 5v trigger in gives last random voltage we generated - trigger interrupt
+0-00/ scaled random every speed time - int for timing and output
+lastrandom/scaled - what is our scale for speed say fastest=10Hz to
+slowest=every 30 seconds - need scale fixed array/log
+
+slowest is like 1min40=10240! DONE with scale
+
+1-01/ scale random every random time scaled by speed setting - int at random time = two random numbers needed TODO====>*or we say that random time is interval and not * and just divide
+0-255(scale) byte time coming out? then we don't need 2 values... TODO DONE
+
+*2-10/ pulse 5v (say 300uS) every x scaled random time ->>>>based on random time interval * lastrandom * scale (log?)* - slow?* DONE
+
+
+3-11/ 5v trigger in gives last random voltage we generated - trigger interrupt DONE
 
 Notes: 
 
@@ -44,6 +47,7 @@ Notes:
  */
 
 #define F_CPU 16000000UL 
+#define F_OSC 16000000UL 
 
 #include <stdio.h>
 #include <stdint.h>
@@ -56,6 +60,7 @@ Notes:
 #include <util/delay.h>
 #include <avr/sleep.h>
 #include <avr/wdt.h>
+#include <inttypes.h>
 
 #define floor(x) ((int)(x))
 #define MAX_SAM 255
@@ -65,64 +70,99 @@ Notes:
 #define HEX__(n) 0x##n##UL
 
 //volatile long i=0;
-static unsigned char entropy[MAX_SAM];
-volatile unsigned char lastrandom,otherrandom;
-static unsigned char mode;
-volatile unsigned int highcounter, hightimer; // 100 mS
-static unsigned int speed; // should these be longs?
+//unsigned char entropy[MAX_SAM];
 
-// need use timer1 for geiger
+volatile unsigned char lastrandom,otherrandom;
+volatile unsigned char mode, scaler, speedscale;
+volatile unsigned int highcounter, hightimer; // 100 mS
+volatile unsigned int speed;
 
 ISR (INT0_vect) // geiger interrupt
 {
-  unsigned char bit;
+  static unsigned int modeonecounter=0,fresco;
+  unsigned char bitt;
+  unsigned long assign; 
   static unsigned char bitcount=0;
-  static unsigned int lasttime=0;
-  unsigned int thistime;
   static unsigned char temprandom=0;
-  // what is timer count? TIMER1 - has it overflowed though? does it matter?
-  thistime=TCNT1;//L+(TCNT1H<<8);
-  // generate bits and count upto byte which is lastrandom
-  if (lasttime<thistime) bit=0;
-  else bit=1;
+  //  bit=(TCNT1L)&0x01;
+  assign=TCNT1L;
+  bitt=assign>>7;
   // accumulate into temprandom and this becomes lastrandom on finishing
-  temprandom+=bit<<bitcount;
-  if (bitcount==7){
-    lastrandom=temprandom;
-    temprandom=0;
-  }
+  temprandom+=bitt<<bitcount;
   bitcount++;
-  lasttime=thistime;
-  // in mode 1 we need two random bytes  - do we just keep on accumulating?
+  if (bitcount==8){
+    lastrandom=temprandom;
+    //    printf("%c",temprandom);
+    if (mode==1 || mode==2){modeonecounter++;
+      if (modeonecounter>=fresco){
+	modeonecounter=0;
+	if (mode==1){
+	  if (scaler==0) scaler=1;
+	  OCR0A=temprandom%scaler;
+	  fresco=speedscale;
+	}
+	else { //based on random time interval * lastrandom * scale (log?)* - slow?
+	  // do pulse - could be shorter but then is filtered so this gives 3 ms pulse
+	  OCR0A=0;
+	  _delay_ms(3);
+	  OCR0A=255;
+	  fresco=(lastrandom*speedscale)>>2;
+	}
+      }
+    }
 
-  // reset timer?
-  TCCR1A = 0x00;
-  TCNT1=0;
-  //TCNT1H=0;
-  // TCNT1L=0; 
+    temprandom=0;
+    bitcount=0;
+  }
+    // try reset here!
+  //    TCCR1A = 0x00;
+  //    TCCR1B = (1<<CS10);
+  //    TCNT1=0;
 }
+
 
 ISR (INT1_vect) // trigger interrupt
 {		
   if (mode==3){
-    OCR0A=lastrandom; // still need to scale
+    if (scaler==0) scaler=1;
+    OCR0A=lastrandom%scaler; // still need to scale
   }
-}
-
+  }
 
 ISR(TIMER2_OVF_vect) // timer2 interrupt - count between 100ms and 30secs to output dependent on mode
 {
   highcounter++;
-  TCNT2=100; // 100 Hz - so for 1 second is 100 of these
+  TCNT2=100; // 100 Hz - so for 1 second is 100 of these - WE NEED THIS!
   // so we can output lastrandom at a specified time?
-  if (highcounter==hightimer){
+  //  hightimer=1000; // 10 sec
+  if (highcounter>=hightimer){ // but hightimer changes???
     highcounter=0;
-    if (mode!=3) OCR0A=lastrandom; // still need to scale and also if is pulse
-    if (mode==1 || mode==2) hightimer=otherrandom; //to be scaled by speed
-    else hightimer=speed;
+    if (scaler==0) scaler=1;
+        if (mode==0) OCR0A=lastrandom%scaler; // also if is pulse
+	hightimer=speed;
   }
+  }
+
+
+#define UART_BAUD_CALC(UART_BAUD_RATE,F_OSC) ((F_OSC)/((UART_BAUD_RATE)*16l)-1)
+
+void serial_init(int baudrate){
+  UBRR0H = (uint8_t)(UART_BAUD_CALC(baudrate,F_CPU)>>8);
+  UBRR0L = (uint8_t)UART_BAUD_CALC(baudrate,F_CPU); /* set baud rate */
+  UCSR0B = (1<<RXEN0) | (1<<TXEN0); /* enable receiver and transmitter */
+  //  UCSR0C = (1<<URSEL) | (3<<UCSZ0);   /* asynchronous 8N1 */
 }
 
+static int uart_putchar(char c, FILE *stream);
+
+static FILE mystdout = FDEV_SETUP_STREAM(uart_putchar, NULL,_FDEV_SETUP_WRITE);
+
+static int uart_putchar(char c, FILE *stream)
+{
+  loop_until_bit_is_set(UCSR0A, UDRE0);
+  UDR0 = c;
+  return 0;
+}
 
 void adc_init(void)
 {
@@ -133,7 +173,7 @@ void adc_init(void)
 	sbi(ADCSRA, ADPS1); // change speed here! now div by 64
 	//	sbi(ADCSRA, ADPS0); // change speed here!
 	sbi(ADCSRA, ADEN);
-	sbi(ADCSRA, ADIE);
+	cbi(ADCSRA, ADIE);
 	DDRC = 0x00;
 	PORTC = 0x00;
 }
@@ -148,36 +188,87 @@ unsigned char adcread(unsigned char channel){
   return result;
 }
 
-unsigned int speedlook[255]={1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,}; // speed scaling TODO
+/*unsigned long speedlook[255]={100, 102, 105, 108, 111, 114, 117, 121, 124, 127, 131, 135, 138, 142,
+146, 150, 154, 159, 163, 167, 172, 177, 182, 187, 192, 197, 203, 208,
+214, 220, 226, 233, 239, 246, 252, 259, 267, 274, 282, 289, 297, 306,
+314, 323, 332, 341, 350, 360, 370, 380, 391, 402, 413, 424, 436, 448,
+460, 473, 486, 500, 514, 528, 542, 558, 573, 589, 605, 622, 639, 657,
+675, 694, 713, 733, 753, 774, 795, 817, 840, 863, 887, 911, 937, 963,
+989, 1017, 1045, 1074, 1103, 1134, 1165, 1198, 1231, 1265, 1300, 1336,
+1373, 1411, 1450, 1490, 1531, 1574, 1617, 1662, 1708, 1755, 1804,
+1854, 1905, 1958, 2012, 2067, 2125, 2183, 2244, 2306, 2370, 2435,
+2503, 2572, 2643, 2716, 2791, 2869, 2948, 3030, 3113, 3200, 3288,
+3379, 3472, 3569, 3667, 3769, 3873, 3980, 4090, 4204, 4320, 4439,
+4562, 4688, 4818, 4951, 5088, 5229, 5374, 5523, 5675, 5832, 5994,
+6160, 6330, 6505, 6685, 6870, 7060, 7255, 7456, 7663, 7875, 8092,
+8316, 8546, 8783, 9026, 9276, 9532, 9796, 10067, 10345, 10632, 10926,
+11228, 11539, 11858, 12186, 12523, 12870, 13226, 13592, 13968, 14354,
+14751, 15159, 15579, 16010, 16452, 16908, 17375, 17856, 18350, 18858,
+19380, 19916, 20467, 21033, 21615, 22213, 22827, 23459, 24108, 24775,
+25460, 26165, 26888, 27632, 28397, 29182, 29990, 30819, 31672, 32548,
+33449, 34374, 35325, 36302, 37307, 38339, 39399, 40489, 41610, 42761,
+43944, 45159, 46409, 47693, 49012, 50368, 51761, 53193, 54665, 56177,
+57732, 59329, 60970, 62657, 64390, 66172, 68002, 69884, 71817, 73804,
+75845, 77944, 80100, 82316, 84593, 86934, 89339, 91810, 94350, 96960,
+			     99643, 102400};
+*/
+
+unsigned int speedlook[256]={10, 10, 10, 10, 11, 11, 11, 12, 12, 12, 13, 13, 13, 14, 14, 15, 15,
+15, 16, 16, 17, 17, 18, 18, 19, 19, 20, 20, 21, 22, 22, 23, 23, 24,
+25, 25, 26, 27, 28, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39,
+40, 41, 42, 43, 44, 46, 47, 48, 50, 51, 52, 54, 55, 57, 58, 60, 62,
+63, 65, 67, 69, 71, 73, 75, 77, 79, 81, 84, 86, 88, 91, 93, 96, 98,
+101, 104, 107, 110, 113, 116, 119, 123, 126, 130, 133, 137, 141, 145,
+149, 153, 157, 161, 166, 170, 175, 180, 185, 190, 195, 201, 206, 212,
+218, 224, 230, 237, 243, 250, 257, 264, 271, 279, 286, 294, 303, 311,
+320, 328, 337, 347, 356, 366, 376, 387, 398, 409, 420, 432, 443, 456,
+468, 481, 495, 508, 522, 537, 552, 567, 583, 599, 616, 633, 650, 668,
+687, 706, 725, 745, 766, 787, 809, 831, 854, 878, 902, 927, 953, 979,
+1006, 1034, 1063, 1092, 1122, 1153, 1185, 1218, 1252, 1287, 1322,
+1359, 1396, 1435, 1475, 1515, 1557, 1601, 1645, 1690, 1737, 1785,
+1835, 1885, 1938, 1991, 2046, 2103, 2161, 2221, 2282, 2345, 2410,
+2477, 2546, 2616, 2688, 2763, 2839, 2918, 2999, 3081, 3167, 3254,
+3344, 3437, 3532, 3630, 3730, 3833, 3939, 4048, 4161, 4276, 4394,
+4515, 4640, 4769, 4901, 5036, 5176, 5319, 5466, 5617, 5773, 5932,
+6097, 6265, 6439, 6617, 6800, 6988, 7181, 7380, 7584, 7794, 8010,
+			     8231, 8459, 8693, 8933, 9181, 9435, 9696, 9964, 10240,12000};
 
 void main(void)
 {
   unsigned int counter=0;
 
+  serial_init(9600);
+  stdout = &mystdout;
+
   adc_init();
 
   // digital in for SW1 on right is PD4, SW2 on left is PD5 - these are modes
-  // in for geiger and trigger = pd1,pd2
-  DDRD=0x40; // PD6 as out
+  // in for geiger and trigger = PD2,PD3
+  DDRD=0x42; // PD6 as out and PD1 as out for serial
+
+  // 4 and 5 need pullups for switches
+  PORTD=0x30; 
 
   // TIMERS and interrupts
   // TIMER 0 for PWM out
 
-  TIMSK0=0; //????
-  TCCR0A=(1<<COM0A1) | (1<<WGM01) | (1<<WGM00); 
-  TCCR0B=(1<<CS00) | (1<<CS01);  // divide by 64 for 1KHz
+      TIMSK0=0; //????
+    TCCR0A=(1<<COM0A1) | (1<<WGM01) | (1<<WGM00); 
+    TCCR0B=(1<<CS00) | (1<<CS01);  // divide by 64 for 1KHz
 
   DIDR0=0x3f; // disable digital inputs on PC0 to PC5
 
-  OCR0A=128;
-
+  OCR0A=100;
+ 
   //////////////////
-
+  
   //pin change interrupt on INT0 and INT1
   //  EICRA = (1<<ISC01) | (1<<ISC00) | (1<<ISC10) | (1<<ISC11);// rising edge on INT0 and INT1
-  EICRA = (1<<ISC01) | (1<<ISC10) | (1<<ISC11);// falling edge on INT0 and rising on INT1
-
+  EICRA = (1<<ISC01) | (1<<ISC10) | (1<<ISC11);// falling edge on INT0 and rise on INT1
   EIMSK = (1<<INT0) | (1<<INT1);
+
+  //      EICRA = (1<<ISC01)  | (1<<ISC00);// falling edge on INT0 and rise on INT1
+  //      EIMSK = (1<<INT0);
 
   //////////////////
 
@@ -191,42 +282,38 @@ void main(void)
 
   // Setting Timer 2: - this one is 8 bit
   // normal mode
-  TCCR2A = 0x00;
+      TCCR2A = 0x00;
     // Set to clk/256 
-  TCCR2B |= (1<<CS20)|(1<<CS21)|(1<<CS22);// 1024
+    TCCR2B |= (1<<CS20)|(1<<CS21)|(1<<CS22);// 1024
     //enable overflow interrupt
     TIMSK2 |= (1<<TOIE2);
     //load timer with a value to optimize for 1 second, (256/8MHz)*(65536bits-34000)~=1.009s
     // what we want is say every 0.01 seconds for 100Hz
+    //    (1024/16000000) *(256-100)=0.009984 // close to 0.01
+
+    // (1024/16000000) * (256-240)=0.001024
 
     //(CPU frequency) / (prescaler value) = 125000 Hz = 8us. 15625 hz
     //   (desired period) / 8us = 125.  0.01 / 0.000064 = 156 
-
-    /// FOR 0.001 seconds so *100 for 1/10th of a second!
-    //0.001/0.000064=15.6 say 16
     //   MAX(uint8) + 1 - 125 = 131; 256- 156 = 100
-    // 256-16=240
+    // divide by 10 again = 256-16=240
 
-
-
-    TCNT2 = 100; 
-	
+    //    TCNT2 = 240;// was 100 before  now is for 0.001 seconds	
+    TCNT2 = 100;// 100 is for 0.01 seconds
     sei(); //turn on global interrupts - make sure this doesn't interfere with PWM?
-
+  
     highcounter=0;
-    hightimer=10; // 10Hz
+    hightimer=10; // was 100 for 1Hz is now 1000 for 1Hz
+    speed=10;//1 Hz
 
   while(1){
-
     // which mode? pins 4 and 5 become
-    //   mode=PIND>>4;
-    mode=0;
-
+    //mode=((PIND>>4)&3)^3; // how to invert it? NOW WORKS?
+    mode=2;
     // set speed and scaling
-    unsigned char speedscale=adcread(0)+adcread(3);
-    speed=speedlook[speedscale]*10; // 10 Hz basis todo - now is just 10 still!!
-    unsigned char valuescale=adcread(1)+adcread(2);
+    speedscale=adcread(0)+adcread(3);
+    scaler=adcread(1)+adcread(2);
+    speed=speedlook[speedscale];
   }
-
 }
 
