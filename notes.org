@@ -160,9 +160,9 @@ res and some mouser switches
 
 Extending the explorations of material process and ever viral code
 initiated by the micro_research ERD series, ERD/γ digs the Eurorack
-synth deep into geolofical time scales of radioactive decay.
+synth deep into geological time scales of radioactive decay.
 
-add half-life tables/explain... module needs to be recalibrated after
+add half-life tables/explain(pitchblend)... module needs to be recalibrated after
 x billion years// dosage table // image photo exposure // dosage chart
 
 software: calibrate 1st minute for scale
