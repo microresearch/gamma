@@ -1,6 +1,6 @@
 /* ERD/GAMMA
 
-- finished now just more or less to tweak
+- finished now just more or less to tweak and re-test entropy!
 
 ////////////////////
 
@@ -85,6 +85,13 @@ ISR (INT0_vect) // geiger interrupt
   static unsigned char bitcount=0;
   static unsigned char temprandom=0;
   //  bit=(TCNT1L)&0x01;
+
+  // new max trigger code - on serial exposed PIN PD1
+  // put divider and maybe other trigger modes here
+  PORTD=0x32;
+  _delay_ms(0.2); //200uS pulse!
+  PORTD=0x30;
+
   assign=TCNT1L;
   bitt=assign>>7;
   // accumulate into temprandom and this becomes lastrandom on finishing
@@ -93,20 +100,13 @@ ISR (INT0_vect) // geiger interrupt
   if (bitcount==8){
     lastrandom=temprandom;
     //    printf("%c",temprandom);
-    if (mode==1 || mode==2){modeonecounter++;
+    if (mode==1){modeonecounter++;
       if (modeonecounter>=fresco){
 	modeonecounter=0;
 	if (mode==1){
 	  if (scaler==0) scaler=1;
 	  OCR0A=temprandom%scaler;
 	  fresco=speedscale;
-	}
-	else { //based on random time interval * lastrandom * scale (log?)* - slow?
-	  // do pulse - could be shorter but then is filtered so this gives 3 ms pulse
-	  OCR0A=0;
-	  _delay_ms(3);
-	  OCR0A=255;
-	  fresco=(lastrandom*speedscale)>>2;
 	}
       }
     }
@@ -237,13 +237,16 @@ void main(void)
 {
   unsigned int counter=0;
 
-  serial_init(9600);
-  stdout = &mystdout;
+  //  serial_init(9600);
+  //  stdout = &mystdout;
 
   adc_init();
 
   // digital in for SW1 on right is PD4, SW2 on left is PD5 - these are modes
   // in for geiger and trigger = PD2,PD3
+  // TESTING PD1 as output for trigger out now!
+
+
   DDRD=0x42; // PD6 as out and PD1 as out for serial
 
   // 4 and 5 need pullups for switches
@@ -259,7 +262,9 @@ void main(void)
   DIDR0=0x3f; // disable digital inputs on PC0 to PC5
 
   OCR0A=100;
- 
+
+  // 
+  
   //////////////////
   
   //pin change interrupt on INT0 and INT1
@@ -308,8 +313,8 @@ void main(void)
 
   while(1){
     // which mode? pins 4 and 5 become
-    //mode=((PIND>>4)&3)^3; // how to invert it? NOW WORKS?
-    mode=2;
+    mode=((PIND>>4)&3)^3; // how to invert it? NOW WORKS?
+    //    mode=2;
     // set speed and scaling
     speedscale=adcread(0)+adcread(3);
     scaler=adcread(1)+adcread(2);
