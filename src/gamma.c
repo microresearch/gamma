@@ -1,6 +1,9 @@
 /* ERD/GAMMA
 
 - finished now just more or less to tweak and re-test entropy!
+- changed trigger so added trigger modes to test
+- test extra fast low entropy mode
+- test all modes just in case esp 1...
 
 ////////////////////
 
@@ -42,9 +45,9 @@ one 2-10 mode idea is low entropy speedy CV - again with scales as 00
 
 3-11/ 5v trigger in gives last random voltage we generated - trigger interrupt DONE
 
-and 4 trigger modes
+and 4 trigger modes all DONE
 
-0-00: use timer to give pulse on lastrandom time * speedscale - match to 0 DONE
+0-00: use timer to give pulse on lastrandom time * speedscale - match to 0 
 
 1-01: as above lastrandom*speedscale - but we need to update this when we generate lastrandom so is slower  - match to 1
 from previous code: based on random time interval * lastrandom * scale (log?)* - slow?
@@ -52,7 +55,7 @@ divider is fresco=(lastrandom*speedscale)>>2;
 
 2-11: speedscale is divider and run as fast as possible on pulses - match to 2
 
-3-11: ??? trigger in gives next pulse speedscaled but only a short time delay/??? - match to 3 TODO
+3-11: ??? trigger in gives next pulse speedscaled but only a short time delay/??? - match to 3 
 
 Notes not implemented: 
 
@@ -104,9 +107,9 @@ ISR (INT0_vect) // geiger interrupt
   // new max trigger code - on serial exposed PIN PD1
   // put divider and maybe other trigger modes here
 
-  if (mode==0 || mode==1){ // pulsing
+    if (mode==1 || mode==2){ // pulsing
     pulseonecounter++;
-    if (mode==0 && pulseonecounter>=pulsefresco){
+    if (mode==1 && pulseonecounter>=pulsefresco){
       pulseonecounter=0;
       PORTD=0x32;
       _delay_ms(0.2); //200uS pulse!
@@ -120,11 +123,12 @@ ISR (INT0_vect) // geiger interrupt
       PORTD=0x30;
       pulsefresco=speedscale;
     }
-  }
+      }
 
   assign=TCNT1L;
 
   if (mode==2){ // low entropy mode
+      modeonecounter++;
       if (modeonecounter>=fresco){
 	modeonecounter=0;
 	  if (scaler==0) scaler=1;

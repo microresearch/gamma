@@ -1,4 +1,24 @@
-* Latest
+* edition of 60. price 225
+
+* costs - euros
+
+- tube 12
+- castings resin/casts (20 casts say 100=5+costs=10) 10
+- pitchblend 12
+
+- parts approx 15 
+- thru-hole 2xswitch, 3xpoti, 5x jacks 3
+- knobs x3= 2
+- pcb/panel 20
+- manual/cables/screws 3
+- postage and packings 6+1 say= 7
+
+excess costs say 10
+production costs 20
+
+TOTAL: 114!
+
+* old notes here// see README.org in src
 
 ** 24/11
 
@@ -162,21 +182,24 @@ Extending the explorations of material process and ever viral code
 initiated by the micro_research ERD series, ERD/γ digs the Eurorack
 synth deep into geological time scales of radioactive decay.
 
+half life... randomness quotes... references
+
+about pitchblende - diagram
+
+https://en.wikipedia.org/wiki/Uraninite
+
 add half-life tables/explain(pitchblend)... module needs to be recalibrated after
 x billion years// dosage table // image photo exposure // dosage chart
 
-software: calibrate 1st minute for scale
+software: 
 
-jacks: rawout, out
+jacks: trigger out, out
 CV: speed, scale, trigger
 pot: speed, scale
 
-modes on switches: 
+document modes on switches: 
 00/ scaled random every speed time
 01/ scaled random every random time scaled by speed
-10/ pulse 5v every x scaled random time
+NO!10/ pulse 5v every x scaled random time
 11/ 5v trigger in gives last random voltage
 
-random just by interval or accumulate bits
-
-interrupts: geiger, trigger, timer for intervals
