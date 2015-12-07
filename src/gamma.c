@@ -34,12 +34,27 @@ slowest is like 1min40=10240! DONE with scale
 1-01/ scale random every random time scaled by speed setting - int at random time = two random numbers needed TODO====>*or we say that random time is interval and not * and just divide
 0-255(scale) byte time coming out? then we don't need 2 values... TODO DONE
 
-*2-10/ pulse 5v (say 300uS) every x scaled random time ->>>>based on random time interval * lastrandom * scale (log?)* - slow?* DONE
+// REPLACE! *2-10/ pulse 5v (say 300uS) every x scaled random time ->>>>based on random time interval * lastrandom * scale (log?)* - slow?* DONE
 
+2-11/ as 0 but use low entropy %255 for speed... DONE - to test
+
+one 2-10 mode idea is low entropy speedy CV - again with scales as 00
 
 3-11/ 5v trigger in gives last random voltage we generated - trigger interrupt DONE
 
-Notes: 
+and 4 trigger modes
+
+0-00: use timer to give pulse on lastrandom time * speedscale - match to 0 DONE
+
+1-01: as above lastrandom*speedscale - but we need to update this when we generate lastrandom so is slower  - match to 1
+from previous code: based on random time interval * lastrandom * scale (log?)* - slow?
+divider is fresco=(lastrandom*speedscale)>>2;
+
+2-11: speedscale is divider and run as fast as possible on pulses - match to 2
+
+3-11: ??? trigger in gives next pulse speedscaled but only a short time delay/??? - match to 3 TODO
+
+Notes not implemented: 
 
 [- Store entropy in array for use just in case (then we can select random value)]
 - say we have 150 cps = 1/150=1/200 say = 0.005 = average 500 microseconds every event
@@ -74,12 +89,12 @@ Notes:
 
 volatile unsigned char lastrandom,otherrandom;
 volatile unsigned char mode, scaler, speedscale;
-volatile unsigned int highcounter, hightimer; // 100 mS
+volatile unsigned int highcounter=0, hightimer, highpulsecounter=0,highpulsetimer; // 100 mS
 volatile unsigned int speed;
 
 ISR (INT0_vect) // geiger interrupt
 {
-  static unsigned int modeonecounter=0,fresco;
+  static unsigned int modeonecounter=0,pulseonecounter=0,fresco,pulsefresco;
   unsigned char bitt;
   unsigned long assign; 
   static unsigned char bitcount=0;
@@ -88,11 +103,36 @@ ISR (INT0_vect) // geiger interrupt
 
   // new max trigger code - on serial exposed PIN PD1
   // put divider and maybe other trigger modes here
-  PORTD=0x32;
-  _delay_ms(0.2); //200uS pulse!
-  PORTD=0x30;
+
+  if (mode==0 || mode==1){ // pulsing
+    pulseonecounter++;
+    if (mode==0 && pulseonecounter>=pulsefresco){
+      pulseonecounter=0;
+      PORTD=0x32;
+      _delay_ms(0.2); //200uS pulse!
+      PORTD=0x30;
+      pulsefresco=(lastrandom*speedscale)>>2;
+    }
+    else if (mode==2 && pulseonecounter>=pulsefresco){
+      pulseonecounter=0;
+      PORTD=0x32;
+      _delay_ms(0.2); //200uS pulse!
+      PORTD=0x30;
+      pulsefresco=speedscale;
+    }
+  }
 
   assign=TCNT1L;
+
+  if (mode==2){ // low entropy mode
+      if (modeonecounter>=fresco){
+	modeonecounter=0;
+	  if (scaler==0) scaler=1;
+	  OCR0A=(assign%255)%scaler;
+	  fresco=speedscale; // ?? of timing???
+      }
+  }
+
   bitt=assign>>7;
   // accumulate into temprandom and this becomes lastrandom on finishing
   temprandom+=bitt<<bitcount;
@@ -100,14 +140,13 @@ ISR (INT0_vect) // geiger interrupt
   if (bitcount==8){
     lastrandom=temprandom;
     //    printf("%c",temprandom);
-    if (mode==1){modeonecounter++;
+    if (mode==1){
+      modeonecounter++;
       if (modeonecounter>=fresco){
 	modeonecounter=0;
-	if (mode==1){
 	  if (scaler==0) scaler=1;
 	  OCR0A=temprandom%scaler;
-	  fresco=speedscale;
-	}
+	  fresco=(lastrandom*speedscale)>>2; // ?? of timing???
       }
     }
 
@@ -126,23 +165,43 @@ ISR (INT1_vect) // trigger interrupt
   if (mode==3){
     if (scaler==0) scaler=1;
     OCR0A=lastrandom%scaler; // still need to scale
+    // set a timer/scaled which then triggers pulse in ISR below...
+    highpulsecounter=0;
+    highpulsetimer=(lastrandom*speed)>>2; // TEST!
   }
-  }
+}
 
 ISR(TIMER2_OVF_vect) // timer2 interrupt - count between 100ms and 30secs to output dependent on mode
 {
-  highcounter++;
   TCNT2=100; // 100 Hz - so for 1 second is 100 of these - WE NEED THIS!
-  // so we can output lastrandom at a specified time?
-  //  hightimer=1000; // 10 sec
-  if (highcounter>=hightimer){ // but hightimer changes???
+  if (mode==0){
+  highcounter++;
+  if (highcounter>=hightimer){ 
     highcounter=0;
     if (scaler==0) scaler=1;
-        if (mode==0) OCR0A=lastrandom%scaler; // also if is pulse
-	hightimer=speed;
+    OCR0A=lastrandom%scaler; // also if is pulse
+    hightimer=speed;
+  }
+  // and for pulse..
+  highpulsecounter++;
+  if (highpulsecounter>=highpulsetimer){
+    highpulsecounter=0;
+    highpulsetimer=(lastrandom*speed)>>2; // TEST!
+    PORTD=0x32;
+    _delay_ms(0.2); //200uS pulse!
+    PORTD=0x30;
   }
   }
-
+  if (mode==3){
+  highpulsecounter++;
+  if (highpulsecounter>=highpulsetimer){
+    highpulsecounter=0;
+    PORTD=0x32;
+    _delay_ms(0.2); //200uS pulse!
+    PORTD=0x30;
+  }
+  }
+}
 
 #define UART_BAUD_CALC(UART_BAUD_RATE,F_OSC) ((F_OSC)/((UART_BAUD_RATE)*16l)-1)
 

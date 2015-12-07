@@ -1,4 +1,30 @@
-* notes 1/12/2015
+
+* 7/12/2015
+
+- on gamma_revised.brd we have trigger out on PD0/pin 30!!!! - re-check gerbers on this!
+
+* 5/12/2015
+
+- we need seperate trigger out as CV as trigger is too slow/low on filter
+
+- so we repurpose geiger pulse out (cut from r23 to unmarked resistor
+  1K) to come from top serial pin PD1 (don;t put jumper there
+  anyways)... rewire on first 20 and re-do PCB after that...
+
+- means we have one extra mode???:
+
+fast but low entropy - take low bits &255
+
+-  and 4 possible trigger modes and how these match with CV modes for speed:
+
+0-00: as belowabove lastrandom*speedscale - but we need to update this when we generate lastrandom so is slower  - match to 0
+1-01: use timer to give pulse on lastrandom time * speedscale - match to 1
+2-11: speedscale is divider and run as fast as possible on pulses - match to 2
+from previous code: based on random time interval * lastrandom * scale (log?)* - slow?
+divider is fresco=(lastrandom*speedscale)>>2;
+3-11: ??? trigger in gives next pulse speedscaled but only a short time delay/??? - match to 3
+
+* 1/12/2015
 
 - gamma and gammaent001 code is on x60 and some strangeness but algo works there...
 
@@ -89,44 +115,12 @@ random_time*log scale(?) (0-255*255) = max 10times per sec to
 
 1,2,3,4->.... every 2nd, 3rd etc,,, to 255th = every 255th= 25 secs
 
-*or we say that random time is interval and not /*/ and just divide
-0-255(scale) byte time coming out? then we don't need 2 values...*
+or we say that random time is interval and not /*/ and just divide
+0-255(scale) byte time coming out? then we don't need 2 values...
 
 *2*-10/ pulse 5v every x scaled random time - as above-01 or *do pulse
-based on random time interval * lastrandom * scale (log?)* - slow?
+based on random time interval * lastrandom * scale (log?)* - slow? *TO REPLACE in new scheme below*
 
-*3-11/ 5v trigger in gives last random voltage we generated - trigger interrupt* DONE almost
+*3*-11/ 5v trigger in gives last random voltage we generated - trigger interrupt* DONE almost
 
 
-* 5/12/2015
-
-- we need seperate trigger out as CV as trigger is too slow/low on filter
-
-- so we repurpose geiger pulse out (cut from r23 to unmarked resistor
-  1K) to come from top serial pin PD1 (don;t put jumper there
-  anyways)... rewire on first 20 and re-do PCB after that...
-
-- means we have one extra mode???:
-
-fast but low entropy?
-
--  and 4 possible trigger modes:
-
-00: speedscale is divider
-01: as below lastrandom*speedscale
-10: maybe slow/fast doubles of above????
-11:
-
-discard code:
-
-else {
-// but we can also do this pulse/divider in main above trigger so runs fast!
-//based on random time interval * lastrandom * scale (log?)* - slow?
-// do pulse - could be shorter but then is filtered so this gives 3 ms pulse
-//	  OCR0A=0; turn off
-//	  OCR0A=0;
-PORTD=0x32;
-_delay_ms(0.3);
-PORTD=0x30;
-fresco=(lastrandom*speedscale)>>2;
-}
