@@ -5,6 +5,15 @@
 - test extra fast low entropy mode
 - test all modes just in case esp 1...
 
+// DEC8->
+
+- CV modes work though 01-1 rand at rand time is SLOW!!! to fix
+- trigger out modes so far to test:
+0- on timer - very, very SLOW!
+1- on divider - SLOW
+2- speedscale fast - but not enough variation - need like bursts/no bursts but how get range?
+3- trig in - again maybe too SLOW but something is wrong ---- redone with flag
+
 ////////////////////
 
 - what are interrupts?
@@ -90,14 +99,14 @@ Notes not implemented:
 //volatile long i=0;
 //unsigned char entropy[MAX_SAM];
 
-volatile unsigned char lastrandom,otherrandom;
-volatile unsigned char mode, scaler, speedscale;
-volatile unsigned int highcounter=0, hightimer, highpulsecounter=0,highpulsetimer; // 100 mS
+volatile unsigned char lastrandom;
+volatile unsigned char mode, scaler, speedscale, pulseflag;
+volatile unsigned int highcounter=0, hightimer=0, highpulsecounter=0,highpulsetimer=0; // 100 mS
 volatile unsigned int speed;
 
 ISR (INT0_vect) // geiger interrupt
 {
-  static unsigned int modeonecounter=0,pulseonecounter=0,fresco,pulsefresco;
+  static unsigned int modeonecounter=0,pulseonecounter=0,fresco=0,pulsefresco=0, newfresco=0;
   unsigned char bitt;
   unsigned long assign; 
   static unsigned char bitcount=0;
@@ -129,11 +138,11 @@ ISR (INT0_vect) // geiger interrupt
 
   if (mode==2){ // low entropy mode
       modeonecounter++;
-      if (modeonecounter>=fresco){
+      if (modeonecounter>=newfresco){
 	modeonecounter=0;
 	  if (scaler==0) scaler=1;
 	  OCR0A=(assign%255)%scaler;
-	  fresco=speedscale; // ?? of timing???
+	  newfresco=speedscale; // ?? of timing??? and maybe fresco is independent of below
       }
   }
 
@@ -150,10 +159,9 @@ ISR (INT0_vect) // geiger interrupt
 	modeonecounter=0;
 	  if (scaler==0) scaler=1;
 	  OCR0A=temprandom%scaler;
-	  fresco=(lastrandom*speedscale)>>2; // ?? of timing???
-      }
+	  fresco=(lastrandom*speedscale)>>2; // ?? of timing??? as is slow
     }
-
+    }
     temprandom=0;
     bitcount=0;
   }
@@ -171,7 +179,8 @@ ISR (INT1_vect) // trigger interrupt
     OCR0A=lastrandom%scaler; // still need to scale
     // set a timer/scaled which then triggers pulse in ISR below...
     highpulsecounter=0;
-    highpulsetimer=(lastrandom*speed)>>2; // TEST!
+    pulseflag=0;
+    highpulsetimer=(lastrandom*speedscale)>>2; // TEST!
   }
 }
 
@@ -190,7 +199,7 @@ ISR(TIMER2_OVF_vect) // timer2 interrupt - count between 100ms and 30secs to out
   highpulsecounter++;
   if (highpulsecounter>=highpulsetimer){
     highpulsecounter=0;
-    highpulsetimer=(lastrandom*speed)>>2; // TEST!
+    highpulsetimer=(lastrandom*speedscale)>>2; // TEST!
     PORTD=0x32;
     _delay_ms(0.2); //200uS pulse!
     PORTD=0x30;
@@ -198,8 +207,10 @@ ISR(TIMER2_OVF_vect) // timer2 interrupt - count between 100ms and 30secs to out
   }
   if (mode==3){
   highpulsecounter++;
-  if (highpulsecounter>=highpulsetimer){
-    highpulsecounter=0;
+  if (highpulsecounter>=highpulsetimer && pulseflag==0){ 
+    // add flag so just fires once and reset by trigger
+    //    highpulsecounter=0;
+    pulseflag=1;
     PORTD=0x32;
     _delay_ms(0.2); //200uS pulse!
     PORTD=0x30;

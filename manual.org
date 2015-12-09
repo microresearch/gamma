@@ -1,0 +1,218 @@
+* start notes/intro
+
+//product image//dark image//
+
+randomness quote...
+
+Extending the explorations of material process and ever viral code
+initiated by the micro_research ERD series, ERD/γ digs the Eurorack
+synth deep into geological time scales of radioactive decay.
+
+module needs to be recalibrated after approximately 4.5 billion years
+
+pitchblende and what it contains in terms of uranium isotopes, how it decays --- half life...  
+
+about pitchblende - diagram add half-life tables/explain(pitchblend)...
+
+https://en.wikipedia.org/wiki/Uraninite
+
+Decay_chain(4n+2,_Uranium_series).svg.png
+
+how it works briefly - random voltage and bits accumulation and how to use it - brief modes and triggers/CV
+
+** background
+
+half-life/decay image...
+
+add half-life tables/explain... 
+
+** using - annotated layout
+
+jacks: out, trigger out
+CV: speed, scale, trigger in
+pot: speed, scale voltage
+
+what is logarithmic scaled?
+
+modes on switches: 
+
+4 CV modes: CV out (0-5v)
+
+00- scaled random voltage every speed (discrete) time
+01- scaled random voltage every random time scaled by speed time
+10- low entropy every divided emission by speed time 
+11- trigger in produces last random voltage (note that if triggers are too fast entropy is severely reduced)
+
+accompanied by 4 trigger modes:
+
+00- trigger every random speed scaled time (discrete)
+01- trigger every random divided emission by speed time
+10- trigger every divided emission by speed time (fastest)
+11- trigger in triggers a delayed pulse (speed scaled) trigger out
+
+//intro// tech specs etc.... speeds etc.
+
+** risks and disclaimer
+
+// dosage table // dosage chart
+
+150 CPS = 75uS = 0.075 mS in one hour
+
+666 hours = 50 mS radiation worker
+
+** tech specs
+
+HP, voltage, amps, speed, CV, trigger pulse in 5v, out 5v 200uS
+
+/image of back of board/
+
+ *red stripe or -12V DOWN towards the bottom of the unit*
+
+** Further reading
+
+http://en.wikipedia.org/wiki/Radioactive_decay
+
+http://en.wikipedia.org/wiki/Beta_particle
+
+http://en.wikipedia.org/wiki/Gamma_ray
+
+https://www.fourmilab.ch/hotbits/how3.html
+
+http://www.ciphergoth.org/crypto/unbiasing/
+
+** edition
+
+
+* notes from workshops
+
+allowing the uninitiated to easily enter into a simple physical and
+intuitive relation to nuclear or atomic process.
+
+The geiger counter registers and makes audible and visible the local
+presence of beta and gamma ionising radiation caused primarily by
+forms of radioactive decay within active materials.
+
+autoradiography - polaroid!
+
+http://www.orau.org/ptp/collection/hiroshimatrinity/kodakfilm.htm
+
+Shortly after the atomic bomb was dropped on Hiroshima (August 1945),
+the Kodak Company observed spotting on film that they traced back to
+contamination in their cardboard. Dr. J.H. Webb, a Kodak employee,
+studied the matter and concluded that the contamination must have come
+from a nuclear explosion somewhere in the U.S. In fact, it came from
+the world’s first nuclear explosion, the Trinity Test, that took place
+at Alamogordo New Mexico, July 16, 1945. Fallout from the explosion
+had contaminated the river water that the mill in Indiana had used to
+manufacture the cardboard pulp.
+
+kodakf2.jpg
+
+** 2- short theory/diagrams Alpha/Beta/Gamma
+
+*** History of discovery:
+
+/root/collect2012-4/radioactivity/helimages/becq.gif
+
+Henri Becquerel: uranium salts/rocks fogging film. 1890s
+
+Pierre and Marie Curie: radioactivity as an atomic property/how matter
+spontaneously generates energy.
+
+Ernest Rutherford classifies based on penetrating power 1903.
+
+*** Alpha, Beta, Gamma
+
+/root/collect2012-4/radioactivity/helimages/abg.png
+
+Alpha - fast moving helium atoms. high energy, but due to their large
+mass, they are stopped by just a few inches of air, or a piece of
+paper.
+
+Beta - fast moving electrons. They typically have energies in the
+range of a few hundred keV (1000 electronvolts) to several MeV. Since
+electrons are much lighter than helium atoms, they are able to
+penetrate further, through several feet of air, or several millimeters
+of plastic or less of very light metals.
+
+Gamma - electromagnetic spectrum (below) - photons, just like light,
+except of much higher energy, typically from several keV to several
+MeV. X-Rays and gamma rays are really the same thing, the difference
+is how they were produced. Depending on their energy, they can be
+stopped by a thin piece of aluminum foil, or they can penetrate
+several inches of lead.
+
+*** Ionising radiation
+
+/root/collect2012-4/radioactivity/helimages/spec.png
+
+Ionizing (or ionising) radiation is composed of subatomic particles,
+ions or atoms moving at relativistic speeds, or electromagnetic waves
+on the short wavelength end of the electromagnetic spectrum that carry
+enough energy to liberate electrons from atoms or molecules, thereby
+ionizing them. Gamma rays, X-rays, and the upper vacuum ultraviolet
+part of the ultraviolet spectrum are ionizing, whereas the lower
+ultraviolet, visible light (including laser light), infrared,
+microwaves, and radio waves are considered non-ionizing radiation
+(although lower ultraviolet can still create some ionization).
+
+*** Radioactive Decay
+
+/root/collect2012-4/radioactivity/helimages/alpha.jpg
+
+Atomic/sub-atomic change in materials (but not always) - nuclear
+transmutation.  Radioactive decay, also known as nuclear decay or
+radioactivity, is the process by which a nucleus of an unstable atom
+loses energy by emitting ionizing radiation.
+
+A material that spontaneously emits this kind of radiation - which
+includes the emission of alpha particles, beta particles, and gamma
+rays—is considered radioactive.
+
+*** xx
+
+/root/collect2012-4/radioactivity/helimages/alpha.gif
+
+How produced: Alpha decay: quantum tunneling
+
+Beta decay, Gamma decay (also other forms of gamma radiation)
+
+*** Half life (daughters)
+
+/root/collect2012-4/radioactivity/helimages/decay.png
+
+Half-life is the time required for exactly half of the entities to
+decay on average.
+
+In other words, the probability of a radioactive atom decaying within
+ its half-life is 50%.
+
+*** xx
+
+An example is the natural decay chain of 238U, which is as follows:
+
+    decays, through alpha-emission, with a half-life of 4.5 billion years to thorium-234
+    which decays, through beta-emission, with a half-life of 24 days to protactinium-234
+    which decays, through beta-emission, with a half-life of 1.2 minutes to uranium-234
+    which decays, through alpha-emission, with a half-life of 240 thousand years to thorium-230
+    which decays, through alpha-emission, with a half-life of 77 thousand years to radium-226
+    which decays, through alpha-emission, with a half-life of 1.6 thousand years to radon-222
+    which decays, through alpha-emission, with a half-life of 3.8 days to polonium-218
+    which decays, through alpha-emission, with a half-life of 3.1 minutes to lead-214
+    which decays, through beta-emission, with a half-life of 27 minutes to bismuth-214
+    which decays, through beta-emission, with a half-life of 20 minutes to polonium-214
+    which decays, through alpha-emission, with a half-life of 160 microseconds to lead-210
+    which decays, through beta-emission, with a half-life of 22 years to bismuth-210
+    which decays, through beta-emission, with a half-life of 5 days to polonium-210
+
+    which decays, through alpha-emission, with a half-life of 140 days
+    to lead-206, which is a stable nuclide.
+
+
+** further reading:
+
+http://en.wikipedia.org/wiki/Radioactive_decay
+http://en.wikipedia.org/wiki/Radionuclide 
+http://en.wikipedia.org/wiki/Alpha_particle
+http://en.wikipedia.org/wiki/Beta_particle
+http://en.wikipedia.org/wiki/Gamma_ray

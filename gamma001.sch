@@ -1,11 +1,6 @@
-EESchema Schematic File Version 2  date Wed 11 Nov 2015 13:22:47 CET
+EESchema Schematic File Version 2  date Wed 09 Dec 2015 22:58:52 CET
 LIBS:power
 LIBS:maxim-filter
-LIBS:avr-4
-LIBS:avr-3
-LIBS:avr-2
-LIBS:avr-1
-LIBS:atmel-1
 LIBS:device
 LIBS:conn
 LIBS:linear
