@@ -1,20 +1,15 @@
 /* ERD/GAMMA
 
+- re-test entropy
+
 - finished now just more or less to tweak and re-test entropy!
-- changed trigger so added trigger modes to test
-- test extra fast low entropy mode
-- test all modes just in case esp 1...
+- only one trigger mode now
+- to test and try new divider code for trigger and 1 and 2 CV mode - seems okayTODO!
+- also timing of 0 to tweak.. but mode 3 trigger in is fine
 
-// DEC8->
+TODO: tweak timings, need 2 independents - one is done which means half max speed, re-check entropy!
 
-- CV modes work though 01-1 rand at rand time is SLOW!!! to fix
-- trigger out modes so far to test:
-0- on timer - very, very SLOW!
-1- on divider - SLOW
-2- speedscale fast - but not enough variation - need like bursts/no bursts but how get range?
-3- trig in - again maybe too SLOW but something is wrong ---- redone with flag
-
-////////////////////
+//////////////////// OLDER
 
 - what are interrupts?
 
@@ -96,62 +91,70 @@ Notes not implemented:
 #define sbi(reg, bit) reg |= (BV(bit))              // Sets the corresponding bit in register reg
 #define HEX__(n) 0x##n##UL
 
-//volatile long i=0;
-//unsigned char entropy[MAX_SAM];
-
 volatile unsigned char lastrandom;
-volatile unsigned char mode, scaler, speedscale, pulseflag;
-volatile unsigned int highcounter=0, hightimer=0, highpulsecounter=0,highpulsetimer=0; // 100 mS
+volatile unsigned char entropy[255];
+volatile unsigned char mode, scaler, speedscale;
+volatile unsigned int highcounter=0, hightimer=0;
 volatile unsigned int speed;
+
+// TODO: zero section should be longer in both cases
+const unsigned char shifter[256]={0,0,0,0,7,6,5,4,3,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+
+const unsigned char sclerxxx[256]={0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 10, 10, 10, 10, 11, 11, 11, 11, 12, 12, 12, 12, 13, 13, 13, 14, 14, 14, 15, 15, 15, 16, 16, 16, 17, 17, 18, 18, 18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24, 25, 25, 26, 26, 27, 28, 28, 29, 30, 30, 31, 32, 32, 33, 34, 35, 35, 36, 37, 38, 39, 40, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 51, 52, 53, 54, 55, 56, 58, 59, 60, 62, 63, 65, 66, 68, 69, 71, 72, 74, 75, 77, 79, 81, 82, 84, 86, 88, 90, 92, 94, 96, 99, 101, 103, 105, 108, 110, 113, 115, 118, 120, 123, 126, 129, 131, 134, 137, 140, 144, 147, 150, 154, 157, 160, 164, 168, 172, 175, 179, 183, 187, 192, 196, 200, 205, 209, 214, 219, 224, 229, 234, 239, 244, 250, 255 };
+
 
 ISR (INT0_vect) // geiger interrupt
 {
   static unsigned int modeonecounter=0,pulseonecounter=0,fresco=0,pulsefresco=0, newfresco=0;
   unsigned char bitt;
   unsigned long assign; 
-  static unsigned char bitcount=0;
-  static unsigned char temprandom=0;
+  static unsigned char bitcount=0,cnt=0,cntt=0;
+  static unsigned char lessrandom,lastless,temprandom=0;
   //  bit=(TCNT1L)&0x01;
+  lastless=lessrandom;
+  assign=TCNT1L;
+  lessrandom=(assign%255);
 
   // new max trigger code - on serial exposed PIN PD1
   // put divider and maybe other trigger modes here
 
-    if (mode==1 || mode==2){ // pulsing
     pulseonecounter++;
-    if (mode==1 && pulseonecounter>=pulsefresco){
+    if (pulseonecounter>=pulsefresco){
       pulseonecounter=0;
       PORTD=0x32;
       _delay_ms(0.2); //200uS pulse!
       PORTD=0x30;
-      pulsefresco=(lastrandom*speedscale)>>2;
+      //      pulsefresco=(lastrandom*speedscale)>>2;
+      if (pulsefresco>8)      pulsefresco=((lastrandom>>(shifter[speedscale])+1)*sclerxxx[speedscale])>>2; //TODO check
+      else pulsefresco=((lessrandom>>(shifter[speedscale])+1)*sclerxxx[speedscale])>>2; //TODO check
+      // what we want is like fractions of lastrandom up to speedscale
     }
-    else if (mode==2 && pulseonecounter>=pulsefresco){
-      pulseonecounter=0;
-      PORTD=0x32;
-      _delay_ms(0.2); //200uS pulse!
-      PORTD=0x30;
-      pulsefresco=speedscale;
-    }
-      }
 
-  assign=TCNT1L;
 
   if (mode==2){ // low entropy mode
+    // we need two bits though
+    cntt++;
+    if (cntt==2){
+      cntt=0;
       modeonecounter++;
       if (modeonecounter>=newfresco){
 	modeonecounter=0;
 	  if (scaler==0) scaler=1;
-	  OCR0A=(assign%255)%scaler;
-	  newfresco=speedscale; // ?? of timing??? and maybe fresco is independent of below
+	  OCR0A=lessrandom%scaler;
+	  //	  newfresco=(lastrandom*speedscale)>>2;
+	  // TODO: but we need two independent randoms which we don;t have yet
+	  newfresco=((lastless>>(shifter[speedscale])+1)*sclerxxx[speedscale])>>2; //TODO
       }
   }
+  }
 
-  bitt=assign>>7;
+  bitt=assign>>7; //TODO: rather than &0x01 ??? check entropy
   // accumulate into temprandom and this becomes lastrandom on finishing
   temprandom+=bitt<<bitcount;
   bitcount++;
   if (bitcount==8){
     lastrandom=temprandom;
+
     //    printf("%c",temprandom);
     if (mode==1){
       modeonecounter++;
@@ -159,7 +162,10 @@ ISR (INT0_vect) // geiger interrupt
 	modeonecounter=0;
 	  if (scaler==0) scaler=1;
 	  OCR0A=temprandom%scaler;
-	  fresco=(lastrandom*speedscale)>>2; // ?? of timing??? as is slow
+	  //	  fresco=(lastrandom*speedscale)>>4; // ?? of timing??? as is slow try now >>4
+	  // TODO: but we need two independent randoms which we don;t have! TO TEST this?
+	  // or we need 2 bits???? TODO!
+	  fresco=((lastrandom>>(shifter[speedscale])+1)*sclerxxx[speedscale])>>4;
     }
     }
     temprandom=0;
@@ -177,10 +183,6 @@ ISR (INT1_vect) // trigger interrupt
   if (mode==3){
     if (scaler==0) scaler=1;
     OCR0A=lastrandom%scaler; // still need to scale
-    // set a timer/scaled which then triggers pulse in ISR below...
-    highpulsecounter=0;
-    pulseflag=0;
-    highpulsetimer=(lastrandom*speedscale)>>2; // TEST!
   }
 }
 
@@ -194,26 +196,6 @@ ISR(TIMER2_OVF_vect) // timer2 interrupt - count between 100ms and 30secs to out
     if (scaler==0) scaler=1;
     OCR0A=lastrandom%scaler; // also if is pulse
     hightimer=speed;
-  }
-  // and for pulse..
-  highpulsecounter++;
-  if (highpulsecounter>=highpulsetimer){
-    highpulsecounter=0;
-    highpulsetimer=(lastrandom*speedscale)>>2; // TEST!
-    PORTD=0x32;
-    _delay_ms(0.2); //200uS pulse!
-    PORTD=0x30;
-  }
-  }
-  if (mode==3){
-  highpulsecounter++;
-  if (highpulsecounter>=highpulsetimer && pulseflag==0){ 
-    // add flag so just fires once and reset by trigger
-    //    highpulsecounter=0;
-    pulseflag=1;
-    PORTD=0x32;
-    _delay_ms(0.2); //200uS pulse!
-    PORTD=0x30;
   }
   }
 }
@@ -287,7 +269,7 @@ unsigned char adcread(unsigned char channel){
 			     99643, 102400};
 */
 
-unsigned int speedlook[256]={10, 10, 10, 10, 11, 11, 11, 12, 12, 12, 13, 13, 13, 14, 14, 15, 15,
+const unsigned int speedlook[256]={10, 10, 10, 10, 11, 11, 11, 12, 12, 12, 13, 13, 13, 14, 14, 15, 15,
 15, 16, 16, 17, 17, 18, 18, 19, 19, 20, 20, 21, 22, 22, 23, 23, 24,
 25, 25, 26, 27, 28, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39,
 40, 41, 42, 43, 44, 46, 47, 48, 50, 51, 52, 54, 55, 57, 58, 60, 62,
@@ -306,6 +288,7 @@ unsigned int speedlook[256]={10, 10, 10, 10, 11, 11, 11, 12, 12, 12, 13, 13, 13,
 4515, 4640, 4769, 4901, 5036, 5176, 5319, 5466, 5617, 5773, 5932,
 6097, 6265, 6439, 6617, 6800, 6988, 7181, 7380, 7584, 7794, 8010,
 			     8231, 8459, 8693, 8933, 9181, 9435, 9696, 9964, 10240,12000};
+
 
 void main(void)
 {
