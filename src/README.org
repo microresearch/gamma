@@ -1,4 +1,11 @@
 
+* publicity
+
+Celebrating perhaps one of the several billions of winter solstices
+undergone by certain elements of this module...  good date release
+plunges icy deep time of the geological.  always the shortest day
+
+
 * 7/12/2015
 
 - on gamma_revised.brd we have trigger out on PD0/pin 30!!!! - re-check gerbers on this!
