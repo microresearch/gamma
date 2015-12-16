@@ -1,0 +1,177 @@
+#+TITLE: ERD modular eurorack series ERD/γ manual
+#+STARTUP:    align fold nodlcheck hidestars oddeven lognotestate
+#+SEQ_TODO:   TODO(t) INPROGRESS(i) WAITING(w@) | DONE(d) CANCELED(c@)
+#+TAGS:       Write(w) Update(u) Fix(f) Check(c)  noexport(n)
+#+CATEGORY:   index
+#+OPTIONS:   H:3 num:nil toc:nil \n:nil @:t ::t |:t ^:nil -:nil f:t *:t TeX:t LaTeX:t skip:nil d:(HIDE) tags:not-in-toc
+#+AUTHOR: micro_research
+#+LATEX_HEADER: \setlength\parskip{0.8mm}
+
+//product image//dark image//
+
+"Provide by Arts, for the hardnesse of Nature, for one Sister weepeth without the other."
+
+/[John Dee, A true & faithful relation of what passed for many yeers between Dr. John Dee ... and some spirits...]/
+
+Extending the explorations of material process and ever viral code
+initiated by the micro_research ERD series, ERD/γ digs the Eurorack
+synth deep into geological time scales of radioactive decay. The
+module provides a radioactive source (Uraninite aka. Pitchblende),
+geiger counter and processing to deliver random voltages and
+timing/triggers.
+
+Given the half life of the isotopes within the active material
+(Uranium-238 and Uranium-235) the module must be returned for
+recalibration in perhaps a few billion years.
+
+According to selected mode (four CV modes) ERD/γ outputs a scaled
+random control voltage (0-5v) either at specific adjusted time deltas,
+or at scaled random times. These scales are under CV control. A low
+entropy mode allows for faster random CV out (maximum Hz as compared
+to Hz). A trigger mode supplies the last available random voltage on
+trigger in (rising edge). A dedicated trigger out supplies a 5v
+pulse (200uS duration) at random scaled intervals (at zero speed scale each
+pulse mirrors a beta decay event at the geiger tube). ADD trigger modes
+
+Speed and voltage scales are under CV control; local entropy can thus
+be reduced.
+
+* Background and how it works
+
+file:docs/decaychain.png // maybe on our dark image background?
+
+Any atomic or sub-atomic change within materials implies a nuclear
+transmutation. Radioactive decay, also known as nuclear decay or
+radioactivity, is the process by which a nucleus of an unstable atom
+loses energy by emitting ionizing radiation.
+
+A material that spontaneously emits this kind of radiation - which
+includes the emission of alpha particles, beta particles, and gamma
+rays — is considered radioactive.
+
+The geiger counter tube and circuit registers and makes audible and
+visible the local presence of this beta and gamma ionising radiation
+caused primarily by forms of radioactive decay within active materials
+such as Uraninite embedded within the ERD/γ crystal cube.
+
+Each flash of the LED, and accompanying trigger pulse (before any
+division) means that a particle has been intercepted by the geiger
+tube, causing a pulse of electricity to flow through the tube, and
+triggering an event.
+
+The interval between detected decay events presents a high entropy
+source of randomness. 
+
+Although we know that in 24 days half of our stock of Thorium-234
+atoms (itself a decay product of Uranium-238 in our sample with a
+half-life of 4.5 billion years) will have decayed into
+Protactinium-234, we have no way of knowing exactly when an atom will
+decay, producing as part of this energetic transformation a beta
+particle which will strike our geiger tube and trigger a musical (or
+otherwise) event. We can see the natural decay chain of our
+Uranium-238 below.
+
+However we need to accumulate entropy to avoid any baising from the
+physical characteristics of the tube or circuit. To do this, the
+digital part of the module accumulates random bits from the low bits
+of each interval into bytes and uses these as the source for the
+random voltages. 
+
+Uranium-238:
+
+    decays, through alpha-emission, with a half-life of 4.5 billion years to thorium-234
+    which decays, through beta-emission, with a half-life of 24 days to protactinium-234
+    which decays, through beta-emission, with a half-life of 1.2 minutes to uranium-234
+    which decays, through alpha-emission, with a half-life of 240 thousand years to thorium-230
+    which decays, through alpha-emission, with a half-life of 77 thousand years to radium-226
+    which decays, through alpha-emission, with a half-life of 1.6 thousand years to radon-222
+    which decays, through alpha-emission, with a half-life of 3.8 days to polonium-218
+    which decays, through alpha-emission, with a half-life of 3.1 minutes to lead-214
+    which decays, through beta-emission, with a half-life of 27 minutes to bismuth-214
+    which decays, through beta-emission, with a half-life of 20 minutes to polonium-214
+    which decays, through alpha-emission, with a half-life of 160 microseconds to lead-210
+    which decays, through beta-emission, with a half-life of 22 years to bismuth-210
+    which decays, through beta-emission, with a half-life of 5 days to polonium-210
+    which decays, through alpha-emission, with a half-life of 140 days
+    to lead-206, which is a stable nuclide.
+
+* Layout
+
+file:images/annotatedgamma.png
+
+jacks: out, trigger out
+CV: speedscale, voltage scale, trigger in
+pot: speed, scale voltage
+
+what is exponentially/log scaled?
+
+modes on switches: 
+
+4 CV modes: CV out (0-5v)
+
+00- scaled random voltage every speed (discrete) time
+01- scaled random voltage every random emission scaled by speed time
+10- low entropy every divided emission by speed time 
+11- trigger in produces last random voltage (note that if triggers are too fast entropy is severely reduced)
+
+ADD hz-timings and trigger modes
+
+* Tech specs
+
+12HP, XXmA at +12V, XXmA at -12V, 0mA at 5v. 2 CV inputs(0-5v), 1
+trigger input(edge trigger), 1 CV output(0-5v), 1 trigger output
+(5v at 200uS), 35mm deep.
+
+* Suggested uses and notes
+
+/image of back of board/
+
+ *red stripe or -12V DOWN towards the bottom of the unit*
+
+\noindent Simply wire up the power connector (red/-12V to the bottom
+of the unit when facing the back) and connect CVs and trigger as
+necessary.
+
+* Further reading
+
+http://en.wikipedia.org/wiki/Radioactive_decay
+
+http://en.wikipedia.org/wiki/Beta_particle
+
+http://en.wikipedia.org/wiki/Gamma_ray
+
+https://www.fourmilab.ch/hotbits/how3.html
+
+http://www.ciphergoth.org/crypto/unbiasing/
+
+* Risks and disclaimer
+
+In regular use, the ERD/γ module presents no health hazards. The
+radioactive source is small and encased in resin to prevent any
+contamination by way of dust. It is also of reasonably low decay
+activity and the distance of operator from the source reduces
+considerably an already very minor radiation dose.
+
+The embedded radioactive source should not be removed from the device
+or tampered with in any way. 
+
+The geiger tube requires a very low current, high voltage power supply
+which is not in any way dangerous but contact should be avoided with
+the back of the board.
+
+Despite the lack of any health risks associated with the normal use of
+this device, the manufacturer accepts no responsibility for any health
+issues associated with both the regular or unanticipated uses of this
+module.
+
+* Credits
+
+With thanks to Erich Berger, Daniel Belasco Rogers, Otto Mikkonen and
+Dirk Dunkelberg. Geiger power design is based heavily on mightohm's
+design which was based on Tom Napier's article in issue 184 of
+Circuit Cellar (Nov. 2005).
+
+* Edition
+
+*This ERD/γ module is numbered .... in a strictly limited edition of 60.*
+
