@@ -2,9 +2,21 @@
 * publicity
 
 Celebrating perhaps one of the several billions of winter solstices
-undergone by certain elements of this module...  good date release
-plunges icy deep time of the geological.  always the shortest day
+undergone by certain elements of this module...  dine date release
+plunges icy deep time of the geological. In ERD-world it is always the
+shortest day.
 
+ERD/gamma doesn't deliver a 4.5 billion year long oscillation cycle,
+but in theory the module would have to be returned for recalibration
+in perhaps a few billion years.
+
+In the meantime ... delivers true random voltages and sequence lengths
+under the control of selected controlled entropic measures.
+
+* 15/12/2015
+
+- timing closed to finished with float scales
+- added new trigger mode for 2 triggers on 00,01//10,11
 
 * 7/12/2015
 

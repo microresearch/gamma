@@ -116,9 +116,13 @@ modes on switches:
 
 ADD hz-timings and trigger modes
 
+Also note that the delay/timing for each mode is only reset on the end
+of each pulse, random voltage (so you may have to wait until the next
+event in the sequence).
+
 * Tech specs
 
-12HP, XXmA at +12V, XXmA at -12V, 0mA at 5v. 2 CV inputs(0-5v), 1
+12HP, 35mA at +12V, 4mA at -12V, 0mA at 5v. 2 CV inputs(0-5v), 1
 trigger input(edge trigger), 1 CV output(0-5v), 1 trigger output
 (5v at 200uS), 35mm deep.
 
@@ -131,6 +135,17 @@ trigger input(edge trigger), 1 CV output(0-5v), 1 trigger output
 \noindent Simply wire up the power connector (red/-12V to the bottom
 of the unit when facing the back) and connect CVs and trigger as
 necessary.
+
+\noindent ERD/γ is suited for envelopes, filters and all manner of
+modular re-entropising. The non-deterministic nature of the module
+also renders it suitable for both EVP (Electronic Voice Phenomena)
+experimentation (pair one or two with a Grendel Formant for example)
+and advanced psychic and parapsychological research (Global
+Consciousness project, presentiment).
+
+\noindent Do not touch the geiger tube (the long bronze cylinder) or
+move fingers very close as this will effect the entropy readings.
+
 
 * Further reading
 
