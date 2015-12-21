@@ -28,8 +28,8 @@ According to selected mode (four CV modes) ERD/\gamma outputs a scaled
 random control voltage (0-5v) either at specific adjusted time deltas,
 or at scaled random times. A low entropy mode allows for faster random
 CV out (maximum 100-150Hz as compared to 10-20Hz). A trigger mode
-supply the last available random voltage on trigger in (rising
-edge). A dedicated trigger out supplies a 5v pulse (200uS duration) at
+supplies the last available random voltage on trigger in (rising
+edge). A dedicated trigger out provides a 5v pulse (200uS duration) at
 random scaled intervals (at zero speed scale each pulse mirrors a beta
 decay event at the geiger tube). Timing and voltage scales are under
 CV control; local entropy can thus be reduced.
@@ -82,7 +82,7 @@ into Protactinium-234, we have no way of knowing exactly when an atom
 will decay, producing as part of this energetic transformation a beta
 particle which will strike our geiger tube and trigger a musical (or
 otherwise) event. We can see the natural decay chain of our
-Uranium-238 below.
+Uranium-238 above.
 
 However we need to accumulate entropy to avoid any baising from the
 physical characteristics of the tube or circuit. To do this, the
@@ -105,13 +105,13 @@ random voltages.
 
 *** 2 trigger modes: trigger out (5v, 200 uS) on random time interval/pulse divider:
 
-- 00/01- random time scaled by random scale scaled by speed scale
-- 10/11- random time scaled by speed scale
+- 00/01- Random time scaled by random scale scaled by speed scale = 100Hz to approx 30 seconds
+- 10/11- Random time scaled by speed scale = 100Hz to approx 80 seconds
 
 Also note that the delay/timing for each mode is only reset on the end
 of each pulse, random voltage (so you may have to wait until the next
 event in the sequence). All CV inputs are scaled by the corresponding
-pots. If speedscale pot is set to zero (far left) CV in with have no
+pots. If speedscale pot is set to zero (far left) CV in will have no
 effect. If it is set far right it will effect across the whole speed
 range
 
@@ -172,7 +172,7 @@ module.
 
 With thanks to Erich Berger, Daniel Belasco Rogers, Otto Mikkonen and
 Dirk Dunkelberg. Geiger power supply design is based heavily on
-mightohm's design which was based on Tom Napier's article in issue 184
+mightyohm's design which was based on Tom Napier's article in issue 184
 of Circuit Cellar (Nov. 2005).
 
 * Edition
