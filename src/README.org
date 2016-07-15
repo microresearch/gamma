@@ -2,16 +2,36 @@
 * publicity
 
 Celebrating perhaps one of the several billions of winter solstices
-undergone by certain elements of this module...  dine date release
-plunges icy deep time of the geological. In ERD-world it is always the
+witnessed by certain elements of this module, December 22nd 2015
+presents a fine date for a release which plunges the eurorack into the
+icy deep time of the geological. In ERD-world it is always the
 shortest day.
 
 ERD/gamma doesn't deliver a 4.5 billion year long oscillation cycle,
 but in theory the module would have to be returned for recalibration
 in perhaps a few billion years.
 
-In the meantime ... delivers true random voltages and sequence lengths
-under the control of selected controlled entropic measures.
+The module provides a radioactive source (Uraninite aka. Pitchblende),
+Geiger counter and processing to deliver both pure random voltages and
+random timing/triggers.
+
+Given the half life of the isotopes within the active material
+(Uranium-238 and Uranium-235) the module must be returned for
+recalibration in perhaps a few billion years.
+
+According to selected mode (four CV modes) ERD/γ outputs a scaled
+random control voltage (0-5v) either at specific adjusted time deltas,
+or at scaled random times. A low entropy mode allows for faster random
+CV out (maximum 100-150Hz as compared to 10-20Hz). A trigger mode
+supplies the last available random voltage on trigger in (rising
+edge). A dedicated trigger out provides a 5v pulse (200uS duration) at
+random scaled intervals (at zero speed scale each pulse mirrors a beta
+decay event at the geiger tube). Timing and voltage scales are under
+CV control; local entropy can thus be reduced.
+
+More details: http://www.1010.co.uk/org/ERD.html
+
+Manual: http://1010.co.uk/org/ERDgammamanual.pdf
 
 * 15/12/2015
 
