@@ -225,7 +225,7 @@ ISR (INT0_vect) // geiger interrupt
   unsigned long assign,cnt=0; 
   static unsigned char bitcount=0;
   static unsigned char lastless,temprandom=0;
-  unsigned char lessrandom;
+  static unsigned char lessrandom;
   //  bit=(TCNT1L)&0x01;
 
 
@@ -260,7 +260,7 @@ ISR (INT0_vect) // geiger interrupt
 	readpots();
 	pulsefresco=(float)lessrandom*pgm_read_float(&floaty[speedscale]);
 	}
-    }
+    } //pulsecounter
       
   if (mode==2){ // low entropy mode
     // we need two bits though - ignore this for now TODO as only in case we run fast!
